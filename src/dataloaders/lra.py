@@ -14,7 +14,11 @@ from einops.layers.torch import Rearrange, Reduce
 from PIL import Image  # Only used for Pathfinder
 from datasets import DatasetDict, Value, load_dataset
 
-from src.dataloaders.base import default_data_path, SequenceDataset, ImageResolutionSequenceDataset
+from src.dataloaders.base import (
+    default_data_path,
+    SequenceDataset,
+    ImageResolutionSequenceDataset,
+)
 
 
 class IMDB(SequenceDataset):
@@ -168,6 +172,7 @@ class IMDB(SequenceDataset):
     @property
     def _cache_dir_name(self):
         return f"l_max-{self.l_max}-level-{self.level}-min_freq-{self.min_freq}-append_bos-{self.append_bos}-append_eos-{self.append_eos}"
+
 
 class TabularDataset(torch.utils.data.Dataset):
     def __init__(
@@ -364,6 +369,7 @@ class ListOps(SequenceDataset):
             vocab = pickle.load(f)
         return dataset, tokenizer, vocab
 
+
 class PathFinderDataset(torch.utils.data.Dataset):
     """Path Finder dataset."""
 
@@ -413,6 +419,7 @@ class PathFinderDataset(torch.utils.data.Dataset):
             sample = self.transform(sample)
         return sample, target
 
+
 class PathFinder(ImageResolutionSequenceDataset):
     _name_ = "pathfinder"
     d_input = 1
@@ -454,7 +461,9 @@ class PathFinder(ImageResolutionSequenceDataset):
             )
         else:
             if self.center:
-                transform_list.append(torchvision.transforms.Normalize(mean=0.5, std=0.5))
+                transform_list.append(
+                    torchvision.transforms.Normalize(mean=0.5, std=0.5)
+                )
         if self.sequential:
             # If tokenize, it makes more sense to get rid of the channel dimension
             transform_list.append(
@@ -482,7 +491,7 @@ class PathFinder(ImageResolutionSequenceDataset):
         if self.data_dir is None:
             self.data_dir = (
                 default_data_path / self._name_ / f"pathfinder{self.resolution}"
-            )    
+            )
 
         if stage == "test" and hasattr(self, "dataset_test"):
             return
@@ -503,6 +512,7 @@ class PathFinder(ImageResolutionSequenceDataset):
             [train_len, val_len, test_len],
             generator=torch.Generator().manual_seed(self.seed),
         )
+
 
 class AAN(SequenceDataset):
     _name_ = "aan"
@@ -586,8 +596,8 @@ class AAN(SequenceDataset):
             # Pad both to same length
             # Shape (batch, length)
             L = max(xs1.size(1), xs2.size(1))
-            xs1 = F.pad(xs1, (0, L-xs1.size(1)), value=self.vocab["<pad>"])
-            xs2 = F.pad(xs2, (0, L-xs2.size(1)), value=self.vocab["<pad>"])
+            xs1 = F.pad(xs1, (0, L - xs1.size(1)), value=self.vocab["<pad>"])
+            xs2 = F.pad(xs2, (0, L - xs2.size(1)), value=self.vocab["<pad>"])
             ys = torch.tensor(ys)
             # return xs1, xs2, ys, lengths1, lengths2
 
