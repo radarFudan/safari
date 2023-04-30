@@ -70,6 +70,7 @@ cd flash-attention
 git submodule update --init
 pip install -e .
 
+Shida: The following three are not available
 cd ../csrc/fused_dense_lib && pip install .
 cd ../csrc/xentropy && pip install .
 cd ../csrc/layer_norm && pip install .
