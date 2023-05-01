@@ -5,10 +5,12 @@ from sklearn.metrics import f1_score, roc_auc_score
 from functools import partial
 import torchmetrics.functional as tm_f
 
+
 def _student_t_map(mu, sigma, nu):
     sigma = F.softplus(sigma)
     nu = 2.0 + F.softplus(nu)
     return mu.squeeze(axis=-1), sigma.squeeze(axis=-1), nu.squeeze(axis=-1)
+
 
 def student_t_loss(outs, y):
     mu, sigma, nu = outs[..., 0], outs[..., 1], outs[..., 2]
@@ -27,6 +29,7 @@ def student_t_loss(outs, y):
     ll = Z - nup1_half * torch.log1p(part1)
     return -ll.mean()
 
+
 def gaussian_ll_loss(outs, y):
     mu, sigma = outs[..., 0], outs[..., 1]
     y = y.squeeze(axis=-1)
@@ -37,6 +40,7 @@ def gaussian_ll_loss(outs, y):
         + 0.5 * torch.square((y - mu) / sigma)
     )
     return -ll.mean()
+
 
 def binary_cross_entropy(logits, y):
     # BCE loss requires squeezing last dimension of logits so it has the same shape as y
@@ -54,6 +58,35 @@ def cross_entropy(logits, y):
     return F.cross_entropy(logits, y)
 
 
+def cross_entropy_wl(logits, y, p=2, time_dim=1):
+    """_summary_
+
+    Args:
+        logits (_type_): B * T * ...
+        y (_type_): B * T * ...
+        p (int, optional): _description_. Defaults to 2.
+            TODO, later to support np.infinity.
+            0 is the vanilla mean squared error.
+        time_dim (int, optional): Time weighted dimension over dim 1.
+            TODO, generalize it to general dimension
+
+    Returns:
+        _type_: _description_
+    """
+    assert time_dim == 1
+
+    shape_len = len(logits.shape)
+    shape = tuple(1 if i != 1 else logits.shape[1] for i in range(shape_len))
+
+    weight = torch.ones(shape)
+    for i in range(shape[1]):
+        weight[:, i] = (i + 1) ** p
+    weight /= weight.sum()
+
+    weight.to(logits.device)
+    return cross_entropy(logits * weight, y)
+
+
 def soft_cross_entropy(logits, y, label_smoothing=0.0):
     logits = logits.view(-1, logits.shape[-1])
     # target is now 2d (no target flattening)
@@ -68,12 +101,20 @@ def accuracy(logits, y):
     y = y.view(-1)
     return torch.eq(torch.argmax(logits, dim=-1), y).float().mean()
 
+
 def accuracy_ignore_index(logits, y, ignore_index=-100):
     num_classes = logits.shape[-1]
     preds = torch.argmax(logits, dim=-1)
     logits = logits.view(-1, logits.shape[-1])
     y = y.view(-1)
-    return tm_f.classification.accuracy(preds, y, 'multiclass', num_classes=num_classes, ignore_index=ignore_index, average='micro')
+    return tm_f.classification.accuracy(
+        preds,
+        y,
+        "multiclass",
+        num_classes=num_classes,
+        ignore_index=ignore_index,
+        average="micro",
+    )
 
 
 def accuracy_at_k(logits, y, k=1):
@@ -82,7 +123,9 @@ def accuracy_at_k(logits, y, k=1):
         # Mixup leads to this case: use argmax class
         y = y.argmax(dim=-1)
     y = y.view(-1)
-    return torch.topk(logits, k, dim=-1)[1].eq(y.unsqueeze(-1)).any(dim=-1).float().mean()
+    return (
+        torch.topk(logits, k, dim=-1)[1].eq(y.unsqueeze(-1)).any(dim=-1).float().mean()
+    )
 
 
 def f1_binary(logits, y):
@@ -142,9 +185,41 @@ def mse(outs, y, len_batch=None):
         y_masked = torch.masked_select(y, mask)
         return F.mse_loss(outs_masked, y_masked)
 
+
+def mse_wl(outs, y, len_batch=None, p=2, time_dim=1):
+    """_summary_
+
+    Args:
+        outs (_type_): B * T or B*T*d_i...
+        y (_type_): B * T or B*T*d_i...
+        len_batch (_type_, optional): _description_. Defaults to None.
+        p (int, optional): _description_. Defaults to 2.
+            TODO, later to support np.infinity.
+            0 is the vanilla mean squared error.
+        time_dim (int, optional): Time weighted dimension over dim 1.
+            TODO, generalize it to general dimension
+
+    Returns:
+        _type_: _description_
+    """
+    assert time_dim == 1
+
+    shape_len = len(outs.shape)
+    shape = tuple(1 if i != 1 else outs.shape[1] for i in range(shape_len))
+
+    weight = torch.ones(shape)
+    for i in range(shape[1]):
+        weight[:, i] = (i + 1) ** p
+    weight /= weight.sum()
+
+    weight.to(outs.device)
+    return F.mse_loss(outs * weight, y * weight)
+
+
 def forecast_rmse(outs, y, len_batch=None):
     # TODO: generalize, currently for Monash dataset
-    return torch.sqrt(F.mse_loss(outs, y, reduction='none').mean(1)).mean()
+    return torch.sqrt(F.mse_loss(outs, y, reduction="none").mean(1)).mean()
+
 
 def mae(outs, y, len_batch=None):
     # assert outs.shape[:-1] == y.shape and outs.shape[-1] == 1
@@ -166,12 +241,12 @@ def mae(outs, y, len_batch=None):
 
 # Metrics that can depend on the loss
 def loss(x, y, loss_fn):
-    """ This metric may be useful because the training loss may add extra regularization (e.g. weight decay implemented as L2 penalty), while adding this as a metric skips the additional losses """
+    """This metric may be useful because the training loss may add extra regularization (e.g. weight decay implemented as L2 penalty), while adding this as a metric skips the additional losses"""
     return loss_fn(x, y)
 
 
 def bpb(x, y, loss_fn):
-    """ bits per byte (image density estimation, speech generation, char LM) """
+    """bits per byte (image density estimation, speech generation, char LM)"""
     return loss_fn(x, y) / math.log(2)
 
 
@@ -186,9 +261,9 @@ output_metric_fns = {
     "binary_accuracy": binary_accuracy,
     "accuracy": accuracy,
     "accuracy_ignore_index": accuracy_ignore_index,
-    'accuracy@3': partial(accuracy_at_k, k=3),
-    'accuracy@5': partial(accuracy_at_k, k=5),
-    'accuracy@10': partial(accuracy_at_k, k=10),
+    "accuracy@3": partial(accuracy_at_k, k=3),
+    "accuracy@5": partial(accuracy_at_k, k=5),
+    "accuracy@10": partial(accuracy_at_k, k=10),
     "eval_loss": loss,
     "mse": mse,
     "mae": mae,
@@ -208,7 +283,13 @@ try:
     from segmentation_models_pytorch.losses.focal import focal_loss_with_logits
 
     def iou_with_logits(pr, gt, eps=1e-7, threshold=None, ignore_channels=None):
-        return iou(pr.sigmoid(), gt, eps=eps, threshold=threshold, ignore_channels=ignore_channels)
+        return iou(
+            pr.sigmoid(),
+            gt,
+            eps=eps,
+            threshold=threshold,
+            ignore_channels=ignore_channels,
+        )
 
     output_metric_fns["iou"] = partial(iou, threshold=0.5)
     output_metric_fns["iou_with_logits"] = partial(iou_with_logits, threshold=0.5)
@@ -222,4 +303,3 @@ loss_metric_fns = {
     "ppl": ppl,
 }
 metric_fns = {**output_metric_fns, **loss_metric_fns}  # TODO py3.9
-

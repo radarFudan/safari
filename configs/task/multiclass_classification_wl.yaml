@@ -1,0 +1,7 @@
+# _target_: tasks.tasks.BaseTask
+# Somehow it occured to me that there is no time axis in the output for multiclass_classification
+_name_: base
+loss: cross_entropy_wl
+metrics:
+  - accuracy
+torchmetrics: null
