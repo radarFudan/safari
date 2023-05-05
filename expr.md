@@ -22,6 +22,7 @@
 5. curious-serenity-3 `python -m train experiment=lra/long-conv-lra-aan`
     val loss 0.3485, val accuracy 84.96$%
     crashed
+    Is the output sequential? 
 
 6. easy-dew-4 `python -m train experiment=lra/long-conv-lra-pathfinder`
     Stopped as there is no pathfinder 32...
@@ -31,5 +32,7 @@
 7. Rerun for the trashing debug
     balmy-durian-5
     Currently no crash
+    **running**
+
 8. 
 
