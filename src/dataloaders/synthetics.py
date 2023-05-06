@@ -1,4 +1,4 @@
-'''Synthetic datasets to test in-context learning ability.'''
+"""Synthetic datasets to test in-context learning ability."""
 
 import os
 import torch
@@ -10,8 +10,10 @@ from collections import Counter
 
 from src.dataloaders.base import SequenceDataset
 
+
 class Vocab:
     """Custom vocab."""
+
     def __init__(self, vocab_size: int, special_vocabs: Dict):
         # Special tokens hold copy_prefix and noop/pad token etc
         assert "copy_prefix" in special_vocabs
@@ -19,7 +21,7 @@ class Vocab:
         vocab = [str(v) for v in list(range(vocab_size))]
         self.non_special_vocab = sorted(list(vocab))
         self.vocab = sorted(list(set(vocab + list(self.special_vocabs.values()))))
-        self.v2id = {v:i for i,v in enumerate(self.vocab)}
+        self.v2id = {v: i for i, v in enumerate(self.vocab)}
         self.vocab_size = len(vocab)
 
     def get_next_vocab(self, token: str):
@@ -53,6 +55,7 @@ class Vocab:
 
 class Tokenizer:
     """Custom Tokenizer for our own vocab."""
+
     def __init__(self, vocab: Vocab):
         self.vocab = vocab
 
@@ -64,7 +67,7 @@ class Tokenizer:
         labels = input_ids
         if mask_input:
             # Mask the input tokens for loss but do not mask the copied token
-            labels = [-100] * (copy_prefix_pos+1) + labels[copy_prefix_pos+1:]
+            labels = [-100] * (copy_prefix_pos + 1) + labels[copy_prefix_pos + 1 :]
         if return_tensor:
             input_ids = torch.LongTensor(input_ids)
             labels = torch.LongTensor(labels)
@@ -76,6 +79,7 @@ class Tokenizer:
     def decode(self, ids: list):
         return " ".join([self.vocab.get_vocab(id) for id in ids])
 
+
 def generate_start_seq(vocab: Vocab, input_seq_len: int, rng: np.random.Generator):
     """Generate token sequence up to and including the copy_prefix token."""
     vocab_seq = rng.choice(
@@ -83,9 +87,16 @@ def generate_start_seq(vocab: Vocab, input_seq_len: int, rng: np.random.Generato
         input_seq_len,
         replace=True,
         # Do not generate any special tokens
-        p=[1/(len(vocab)-len(vocab.special_tokens)) if p not in vocab.special_tokens else 0 for p in vocab.vocab])
+        p=[
+            1 / (len(vocab) - len(vocab.special_tokens))
+            if p not in vocab.special_tokens
+            else 0
+            for p in vocab.vocab
+        ],
+    )
     vocab_seq = np.append(vocab_seq, vocab.copy_prefix)
     return vocab_seq.tolist()
+
 
 def generate_induction_head(
     vocab: Vocab,
@@ -104,28 +115,24 @@ def generate_induction_head(
     vocab_seq = generate_start_seq(vocab, input_seq_len, rng)
     if rng.uniform() < 0.5:
         num_triggers = 1
-    pos = sorted(rng.integers(
-        input_seq_len - (1 + induction_len), size=num_triggers
-    ))
+    pos = sorted(rng.integers(input_seq_len - (1 + induction_len), size=num_triggers))
     pos_filtered = []
     for i, p in enumerate(pos):
         if i == 0:
             pos_filtered.append(p)
         elif p - pos_filtered[-1] > induction_len:
             pos_filtered.append(p)
-    to_copy = [
-        vocab_seq[pos_filtered[0]+1+i]
-        for i in range(induction_len)
-    ]
+    to_copy = [vocab_seq[pos_filtered[0] + 1 + i] for i in range(induction_len)]
     for pos in pos_filtered:
         vocab_seq[pos] = copy_prefix
         for i in range(induction_len):
-            vocab_seq[pos+1+i] = to_copy[i]
+            vocab_seq[pos + 1 + i] = to_copy[i]
     # if valid_chars is not None and to_copy not in valid_chars:
     #     vocab_seq[pos+1] = rng.choice(valid_chars)
     #     to_copy = vocab_seq[pos+1]
     vocab_seq = vocab_seq + to_copy
     return " ".join(vocab_seq)
+
 
 def generate_assoc_recall(
     vocab: Vocab,
@@ -139,14 +146,12 @@ def generate_assoc_recall(
     and the copy prefix at the end, and then a key value pair is inserted
     after the copy prefix."""
     non_special_vocab_size = len(vocab.non_special_vocab)
-    keys = vocab.non_special_vocab[:non_special_vocab_size // 2]
-    values = vocab.non_special_vocab[non_special_vocab_size // 2:]
-    keys_multi = [ [key] for key in keys ]
-    for i in range(num_keys-1):
-        keys_multi = [ key + [key2] for key in keys_multi for key2 in keys ]
-    kv_map = {
-        tuple(k): rng.choice(values) for k in keys_multi
-    }
+    keys = vocab.non_special_vocab[: non_special_vocab_size // 2]
+    values = vocab.non_special_vocab[non_special_vocab_size // 2 :]
+    keys_multi = [[key] for key in keys]
+    for i in range(num_keys - 1):
+        keys_multi = [key + [key2] for key in keys_multi for key2 in keys]
+    kv_map = {tuple(k): rng.choice(values) for k in keys_multi}
 
     key_present = {}
     vocab_seq = []
@@ -157,14 +162,16 @@ def generate_assoc_recall(
         key_present[k] = True
         # vocab_seq.append(v)
 
-    
     k = tuple(rng.choice(list(kv_map.keys())))
     if not allow_dot:
         while k not in key_present:
             k = tuple(rng.choice(list(key_present.keys())))
-    to_copy = [vocab.copy_prefix] + list(k) + [ kv_map[k] if k in key_present else vocab.noop ]
+    to_copy = (
+        [vocab.copy_prefix] + list(k) + [kv_map[k] if k in key_present else vocab.noop]
+    )
     vocab_seq = vocab_seq + to_copy
     return " ".join(vocab_seq)
+
 
 class ICLDataModule(SequenceDataset):
     _name_ = "icl_synthetics"
@@ -185,9 +192,10 @@ class ICLDataModule(SequenceDataset):
         allow_dot: bool = False,
         max_copy_len: int = 10,
         test_seq_len: int = None,
-        num_keys: int = 1, # number of keys for associative recall,
+        num_keys: int = 1,  # number of keys for associative recall,
         data_dir: str = None,
-        *args, **kwargs
+        *args,
+        **kwargs,
     ):
         self.num_examples = num_examples
         self.num_test_examples = num_test_examples
@@ -198,25 +206,26 @@ class ICLDataModule(SequenceDataset):
         self.number_duplicates_per_epoch = number_duplicates_per_epoch
         self.seed = seed
         self.batch_size = batch_size
-        self.split_train_test = split_train_test # let the same copy chars appear in train/test
+        self.split_train_test = (
+            split_train_test  # let the same copy chars appear in train/test
+        )
         self.induction_len = induction_len
         self.induction_num_triggers = induction_num_triggers
         self.allow_dot = allow_dot
         self.max_copy_len = max_copy_len
         self.data_dir = data_dir
-        
+
         if test_seq_len is not None:
             self.test_seq_len = test_seq_len
         else:
             self.test_seq_len = input_seq_len
         self.num_keys = num_keys
 
-        special_vocabs = {
-            "copy_prefix": "=>",
-            "noop": "."
-        }
+        special_vocabs = {"copy_prefix": "=>", "noop": "."}
         self.special_vocabs = special_vocabs
-        self.vocab = Vocab(vocab_size-len(special_vocabs), special_vocabs=special_vocabs)
+        self.vocab = Vocab(
+            vocab_size - len(special_vocabs), special_vocabs=special_vocabs
+        )
         self.tokenizer = Tokenizer(self.vocab)
 
         self.num_extra_seq_len = 2
@@ -232,7 +241,9 @@ class ICLDataModule(SequenceDataset):
 
         if self.number_duplicates_per_epoch > 0:
             self.duplicate_ex = self.generate_example()
-            self.duplicate_index = max(int(self.num_examples / self.number_duplicates_per_epoch), 1)
+            self.duplicate_index = max(
+                int(self.num_examples / self.number_duplicates_per_epoch), 1
+            )
         else:
             self.duplicate_ex = None
             self.duplicate_index = -1
@@ -240,10 +251,25 @@ class ICLDataModule(SequenceDataset):
         self.total_seq_len = self.input_seq_len + self.num_extra_seq_len
 
     def generate_induction_head(self, seqlen=None, valid_chars=None):
-        return generate_induction_head(self.vocab, seqlen if seqlen is not None else self.input_seq_len, self.special_vocabs["copy_prefix"], self.induction_len, self.induction_num_triggers, self.rng, valid_chars=valid_chars)
+        return generate_induction_head(
+            self.vocab,
+            seqlen if seqlen is not None else self.input_seq_len,
+            self.special_vocabs["copy_prefix"],
+            self.induction_len,
+            self.induction_num_triggers,
+            self.rng,
+            valid_chars=valid_chars,
+        )
 
     def generate_assoc_recall(self, seqlen=None, valid_chars=None):
-        return generate_assoc_recall(self.vocab, seqlen if seqlen is not None else self.input_seq_len, self.num_keys, self.rng, allow_dot = self.allow_dot, valid_chars=valid_chars)
+        return generate_assoc_recall(
+            self.vocab,
+            seqlen if seqlen is not None else self.input_seq_len,
+            self.num_keys,
+            self.rng,
+            allow_dot=self.allow_dot,
+            valid_chars=valid_chars,
+        )
 
     def generate_example(self, seqlen=None, valid_chars=None):
         vocab_seq = self.copy_f(seqlen=seqlen, valid_chars=valid_chars)
@@ -252,22 +278,32 @@ class ICLDataModule(SequenceDataset):
     def setup(self, stage=None):
         train_tensor = test_tensor = None
         if self.data_dir is not None:
-            try: 
-                train_tensor = torch.load(os.path.join(self.data_dir, 
-                    f"train_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt"))
-                test_tensor = torch.load(os.path.join(self.data_dir, 
-                    f"test_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt"))
+            try:
+                train_tensor = torch.load(
+                    os.path.join(
+                        self.data_dir,
+                        f"train_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt",
+                    )
+                )
+                test_tensor = torch.load(
+                    os.path.join(
+                        self.data_dir,
+                        f"test_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt",
+                    )
+                )
             except:
                 pass
-                
-        if train_tensor is None or test_tensor is None:     
-            if hasattr(self, 'dataset'):
+
+        if train_tensor is None or test_tensor is None:
+            if hasattr(self, "dataset"):
                 return
             self.rng = np.random.default_rng(self.seed)
 
             if self.split_train_test:
                 all_vocab = self.vocab.non_special_vocab
-                train_vocab = set(self.rng.choice(all_vocab, size=len(all_vocab) // 2, replace=False))
+                train_vocab = set(
+                    self.rng.choice(all_vocab, size=len(all_vocab) // 2, replace=False)
+                )
                 test_vocab = set(all_vocab) - train_vocab
                 train_vocab = list(train_vocab)
                 test_vocab = list(test_vocab)
@@ -276,18 +312,28 @@ class ICLDataModule(SequenceDataset):
                 test_vocab = None
 
             all_examples = []
-            for i, (example_count, valid_vocab) in enumerate(zip([self.num_examples, self.num_test_examples], [train_vocab, test_vocab])):
-                examples = torch.stack([self.generate_example(
-                    seqlen=self.input_seq_len if i == 0 else self.test_seq_len,
-                    valid_chars=valid_vocab
-                )['input_ids'] for _ in tqdm(range(example_count))])
+            for i, (example_count, valid_vocab) in enumerate(
+                zip(
+                    [self.num_examples, self.num_test_examples],
+                    [train_vocab, test_vocab],
+                )
+            ):
+                examples = torch.stack(
+                    [
+                        self.generate_example(
+                            seqlen=self.input_seq_len if i == 0 else self.test_seq_len,
+                            valid_chars=valid_vocab,
+                        )["input_ids"]
+                        for _ in tqdm(range(example_count))
+                    ]
+                )
                 examples = torch.unique(examples, dim=0, sorted=False).tolist()
-                
+
                 while len(examples) < example_count:
                     new_example = self.generate_example(
                         seqlen=self.input_seq_len if i == 0 else self.test_seq_len,
-                        valid_chars=valid_vocab
-                    )['input_ids'].tolist()
+                        valid_chars=valid_vocab,
+                    )["input_ids"].tolist()
                     if new_example not in examples:
                         examples.append(new_example)
 
@@ -295,34 +341,58 @@ class ICLDataModule(SequenceDataset):
                 all_examples.append(torch.LongTensor(examples))
 
             # all_examples = torch.concat(all_examples)
-            train_tensor = torch.stack([torch.stack([example[:-1], example[1:]]) for example in all_examples[0]])
-            test_tensor = torch.stack([torch.stack([example[:-1], example[1:]]) for example in all_examples[1]])
-            test_tensor[:, 1, :-1 * (self.num_extra_seq_len - 1)] = -100
+            train_tensor = torch.stack(
+                [
+                    torch.stack([example[:-1], example[1:]])
+                    for example in all_examples[0]
+                ]
+            )
+            test_tensor = torch.stack(
+                [
+                    torch.stack([example[:-1], example[1:]])
+                    for example in all_examples[1]
+                ]
+            )
+            test_tensor[:, 1, : -1 * (self.num_extra_seq_len - 1)] = -100
             if self.copy_method in ["assoc_recall"]:
                 test_tensor[:, 1, :-1] = -100
             if self.copy_method in ["majority", "fom1"]:
-                train_tensor[:, 1, :-1 * (self.num_extra_seq_len - 1)] = -100
-            
-            torch.save(train_tensor, os.path.join(self.data_dir, 
-                f"train_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt")
+                train_tensor[:, 1, : -1 * (self.num_extra_seq_len - 1)] = -100
+
+            print(
+                f"train_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt"
             )
-            torch.save(test_tensor, os.path.join(self.data_dir, 
-                f"test_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt")
-            )  
-             
+            print(self.data_dir)
+            # exit()
+
+            torch.save(
+                train_tensor,
+                os.path.join(
+                    self.data_dir,
+                    f"train_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt",
+                ),
+            )
+            torch.save(
+                test_tensor,
+                os.path.join(
+                    self.data_dir,
+                    f"test_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt",
+                ),
+            )
+
         self.dataset = {
-            'train': TensorDataset(train_tensor[:, 0, :], train_tensor[:, 1, :]),
-            'test': TensorDataset(test_tensor[:, 0, :], test_tensor[:, 1, :])
+            "train": TensorDataset(train_tensor[:, 0, :], train_tensor[:, 1, :]),
+            "test": TensorDataset(test_tensor[:, 0, :], test_tensor[:, 1, :]),
         }
 
     def train_dataloader(self, *args, **kwargs):
-        return self._data_loader(self.dataset['train'], shuffle=True)
+        return self._data_loader(self.dataset["train"], shuffle=True)
 
     def val_dataloader(self, *args, **kwargs):
-        return self._data_loader(self.dataset['test'], shuffle=False)
+        return self._data_loader(self.dataset["test"], shuffle=False)
 
     def test_dataloader(self, *args, **kwargs):
-        return self._data_loader(self.dataset['test'], shuffle=False)
+        return self._data_loader(self.dataset["test"], shuffle=False)
 
     def _data_loader(self, dataset: Dataset, shuffle: bool = False) -> DataLoader:
         return DataLoader(
@@ -330,5 +400,5 @@ class ICLDataModule(SequenceDataset):
             batch_size=self.batch_size,
             num_workers=10,
             shuffle=shuffle,
-            persistent_workers=True
+            persistent_workers=True,
         )

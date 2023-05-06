@@ -34,5 +34,6 @@
     Currently no crash
     **running**
 
-8. 
+8. `python -m train experiment=synthetics/associative_recall/base.yaml`
+
 

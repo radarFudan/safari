@@ -11,6 +11,7 @@ trainer:
 
 dataset:
   batch_size: 32
+  data_dir: /home/aiops/wangsd/github/safari/data/
 
 train:
   global_batch_size: 32

@@ -87,6 +87,64 @@ def cross_entropy_wl(logits, y, p=2, time_dim=1):
     return cross_entropy(logits * weight, y)
 
 
+def cross_entropy_wl0(logits, y, p=0, time_dim=1):
+    """_summary_
+
+    Args:
+        logits (_type_): B * T * ...
+        y (_type_): B * T * ...
+        p (int, optional): _description_. Defaults to 2.
+            TODO, later to support np.infinity.
+            0 is the vanilla mean squared error.
+        time_dim (int, optional): Time weighted dimension over dim 1.
+            TODO, generalize it to general dimension
+
+    Returns:
+        _type_: _description_
+    """
+    assert time_dim == 1
+
+    shape_len = len(logits.shape)
+    shape = tuple(1 if i != 1 else logits.shape[1] for i in range(shape_len))
+
+    weight = torch.ones(shape)
+    for i in range(shape[1]):
+        weight[:, i] = (i + 1) ** p
+    weight /= weight.sum()
+
+    weight.to(logits.device)
+    return cross_entropy(logits * weight, y)
+
+
+def cross_entropy_wl2(logits, y, p=2, time_dim=1):
+    """_summary_
+
+    Args:
+        logits (_type_): B * T * ...
+        y (_type_): B * T * ...
+        p (int, optional): _description_. Defaults to 2.
+            TODO, later to support np.infinity.
+            0 is the vanilla mean squared error.
+        time_dim (int, optional): Time weighted dimension over dim 1.
+            TODO, generalize it to general dimension
+
+    Returns:
+        _type_: _description_
+    """
+    assert time_dim == 1
+
+    shape_len = len(logits.shape)
+    shape = tuple(1 if i != 1 else logits.shape[1] for i in range(shape_len))
+
+    weight = torch.ones(shape)
+    for i in range(shape[1]):
+        weight[:, i] = (i + 1) ** p
+    weight /= weight.sum()
+
+    weight.to(logits.device)
+    return cross_entropy(logits * weight, y)
+
+
 def soft_cross_entropy(logits, y, label_smoothing=0.0):
     logits = logits.view(-1, logits.shape[-1])
     # target is now 2d (no target flattening)
@@ -110,7 +168,7 @@ def accuracy_ignore_index(logits, y, ignore_index=-100):
     return tm_f.classification.accuracy(
         preds,
         y,
-        "multiclass",
+        # "multiclass",
         num_classes=num_classes,
         ignore_index=ignore_index,
         average="micro",
@@ -258,6 +316,9 @@ def ppl(x, y, loss_fn):
 output_metric_fns = {
     "binary_cross_entropy": binary_cross_entropy,
     "cross_entropy": cross_entropy,
+    "cross_entropy_wl": cross_entropy_wl,
+    "cross_entropy_wl0": cross_entropy_wl0,
+    "cross_entropy_wl2": cross_entropy_wl2,
     "binary_accuracy": binary_accuracy,
     "accuracy": accuracy,
     "accuracy_ignore_index": accuracy_ignore_index,

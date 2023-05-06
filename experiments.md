@@ -134,3 +134,5 @@ To run Hyena on ImageNet using ViT (swapping attention for Hyena layers), use th
 ```
 python -m train wandb=null experiment=imagenet/hyena-vit
 ```
+
+Requires 8 GPUs. 
