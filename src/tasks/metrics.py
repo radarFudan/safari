@@ -78,12 +78,11 @@ def cross_entropy_wl(logits, y, p=2, time_dim=1):
     shape_len = len(logits.shape)
     shape = tuple(1 if i != 1 else logits.shape[1] for i in range(shape_len))
 
-    weight = torch.ones(shape)
+    weight = torch.ones(shape, device=logits.device)
     for i in range(shape[1]):
         weight[:, i] = (i + 1) ** p
     weight /= weight.sum()
 
-    weight.to(logits.device)
     return cross_entropy(logits * weight, y)
 
 
@@ -107,12 +106,14 @@ def cross_entropy_wl0(logits, y, p=0, time_dim=1):
     shape_len = len(logits.shape)
     shape = tuple(1 if i != 1 else logits.shape[1] for i in range(shape_len))
 
-    weight = torch.ones(shape)
+    print(logits.shape, y.shape, shape)
+    exit()
+
+    weight = torch.ones(shape, device=logits.device)
     for i in range(shape[1]):
         weight[:, i] = (i + 1) ** p
     weight /= weight.sum()
 
-    weight.to(logits.device)
     return cross_entropy(logits * weight, y)
 
 
@@ -136,12 +137,11 @@ def cross_entropy_wl2(logits, y, p=2, time_dim=1):
     shape_len = len(logits.shape)
     shape = tuple(1 if i != 1 else logits.shape[1] for i in range(shape_len))
 
-    weight = torch.ones(shape)
+    weight = torch.ones(shape, device=logits.device)
     for i in range(shape[1]):
         weight[:, i] = (i + 1) ** p
     weight /= weight.sum()
 
-    weight.to(logits.device)
     return cross_entropy(logits * weight, y)
 
 

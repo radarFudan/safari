@@ -35,5 +35,26 @@
     **running**
 
 8. `python -m train experiment=synthetics/associative_recall/base.yaml`
+    This is a base class
 
+9. Should run 
+    `python -m train experiment=synthetics/associative_recall/transformer`
+    24
+    `python -m train experiment=synthetics/associative_recall/transformer_wl0`
+    25, 31
+    `python -m train experiment=synthetics/associative_recall/transformer_wl2`
+    26
+    
+    `python -m train experiment=synthetics/associative_recall/s4d`
+    ethereal-serenity-27
+    `python -m train experiment=synthetics/associative_recall/s4d_wl0`
+    ruby-disco-28, 32
+    `python -m train experiment=synthetics/associative_recall/s4d_wl2`
+    vibrant-voice-29
+
+    This task does not return sequence output...
+
+    `python -m train experiment=synthetics/associative_recall/h3`
+    *TODO*, bugged, jit.so bug
+    30
 
