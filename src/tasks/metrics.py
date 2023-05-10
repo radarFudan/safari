@@ -80,69 +80,26 @@ def cross_entropy_wl(logits, y, p=2, time_dim=1):
 
     weight = torch.ones(shape, device=logits.device)
     for i in range(shape[1]):
-        weight[:, i] = (i + 1) ** p
+        weight[:, i] = ((i + 1) / (shape[1] + 1)) ** p
     weight /= weight.sum()
 
     return cross_entropy(logits * weight, y)
 
 
 def cross_entropy_wl0(logits, y, p=0, time_dim=1):
-    """_summary_
+    return cross_entropy_wl(logits, y, p=0)
 
-    Args:
-        logits (_type_): B * T * ...
-        y (_type_): B * T * ...
-        p (int, optional): _description_. Defaults to 2.
-            TODO, later to support np.infinity.
-            0 is the vanilla mean squared error.
-        time_dim (int, optional): Time weighted dimension over dim 1.
-            TODO, generalize it to general dimension
 
-    Returns:
-        _type_: _description_
-    """
-    assert time_dim == 1
-
-    shape_len = len(logits.shape)
-    shape = tuple(1 if i != 1 else logits.shape[1] for i in range(shape_len))
-
-    print(logits.shape, y.shape, shape)
-    exit()
-
-    weight = torch.ones(shape, device=logits.device)
-    for i in range(shape[1]):
-        weight[:, i] = (i + 1) ** p
-    weight /= weight.sum()
-
-    return cross_entropy(logits * weight, y)
+def cross_entropy_wl1(logits, y, p=1, time_dim=1):
+    return cross_entropy_wl(logits, y, p=1)
 
 
 def cross_entropy_wl2(logits, y, p=2, time_dim=1):
-    """_summary_
+    return cross_entropy_wl(logits, y, p=2)
 
-    Args:
-        logits (_type_): B * T * ...
-        y (_type_): B * T * ...
-        p (int, optional): _description_. Defaults to 2.
-            TODO, later to support np.infinity.
-            0 is the vanilla mean squared error.
-        time_dim (int, optional): Time weighted dimension over dim 1.
-            TODO, generalize it to general dimension
 
-    Returns:
-        _type_: _description_
-    """
-    assert time_dim == 1
-
-    shape_len = len(logits.shape)
-    shape = tuple(1 if i != 1 else logits.shape[1] for i in range(shape_len))
-
-    weight = torch.ones(shape, device=logits.device)
-    for i in range(shape[1]):
-        weight[:, i] = (i + 1) ** p
-    weight /= weight.sum()
-
-    return cross_entropy(logits * weight, y)
+def cross_entropy_wl10(logits, y, p=10, time_dim=1):
+    return cross_entropy_wl(logits, y, p=10)
 
 
 def soft_cross_entropy(logits, y, label_smoothing=0.0):
@@ -265,13 +222,28 @@ def mse_wl(outs, y, len_batch=None, p=2, time_dim=1):
     shape_len = len(outs.shape)
     shape = tuple(1 if i != 1 else outs.shape[1] for i in range(shape_len))
 
-    weight = torch.ones(shape)
+    weight = torch.ones(shape, device=outs.device)
     for i in range(shape[1]):
-        weight[:, i] = (i + 1) ** p
+        weight[:, i] = ((i + 1) / (shape[1] + 1)) ** p
     weight /= weight.sum()
 
-    weight.to(outs.device)
     return F.mse_loss(outs * weight, y * weight)
+
+
+def mse_wl0(outs, y, len_batch=None, p=0, time_dim=1):
+    mse_wl(outs, y, p=0)
+
+
+def mse_wl1(outs, y, len_batch=None, p=1, time_dim=1):
+    mse_wl(outs, y, p=1)
+
+
+def mse_wl2(outs, y, len_batch=None, p=2, time_dim=1):
+    mse_wl(outs, y, p=2)
+
+
+def mse_wl10(outs, y, len_batch=None, p=10, time_dim=1):
+    mse_wl(outs, y, p=10)
 
 
 def forecast_rmse(outs, y, len_batch=None):
@@ -316,9 +288,10 @@ def ppl(x, y, loss_fn):
 output_metric_fns = {
     "binary_cross_entropy": binary_cross_entropy,
     "cross_entropy": cross_entropy,
-    "cross_entropy_wl": cross_entropy_wl,
     "cross_entropy_wl0": cross_entropy_wl0,
+    "cross_entropy_wl1": cross_entropy_wl1,
     "cross_entropy_wl2": cross_entropy_wl2,
+    "cross_entropy_wl10": cross_entropy_wl10,
     "binary_accuracy": binary_accuracy,
     "accuracy": accuracy,
     "accuracy_ignore_index": accuracy_ignore_index,
@@ -327,6 +300,10 @@ output_metric_fns = {
     "accuracy@10": partial(accuracy_at_k, k=10),
     "eval_loss": loss,
     "mse": mse,
+    "mse_wl0": mse_wl0,
+    "mse_wl1": mse_wl1,
+    "mse_wl2": mse_wl2,
+    "mse_wl10": mse_wl10,
     "mae": mae,
     "forecast_rmse": forecast_rmse,
     "f1_binary": f1_binary,

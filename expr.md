@@ -58,3 +58,7 @@
     *TODO*, bugged, jit.so bug
     30
 
+10 `python -m train experiment=synthetics/associative_recall/hyena-131k-30vs.yaml`
+    33, 34
+    I tried two machines, but it's strange that the utilization of GPU is 0 and the experiment is running very slow. 
+    What's next?
