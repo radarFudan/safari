@@ -1,10 +1,6 @@
 0. Copy the lra dataset from state space
 1. Try `python -m train experiment=lra/long-conv-lra-listops` - 15-00-08-397497
     Get the listops running
-    **TODO** Implement the weighted loss for cross entropy
-    **TODO** Implement the memory evaluation for listops task
-    However, the listops does not output a sequence. 
-    The good news is that it has an accuracy. 
 
 2. Next I try to get the imdb running `python -m train experiment=lra/long-conv-lra-imdb`
     Just discovered the imdb is **multiclass-classification task**.
@@ -27,12 +23,12 @@
 6. easy-dew-4 `python -m train experiment=lra/long-conv-lra-pathfinder`
     Stopped as there is no pathfinder 32...
     (Failed)
-    **TODO** Find the pathfinder 32, check silicon
+    *TODO* Find the pathfinder 32, check silicon
 
 7. Rerun for the trashing debug
     balmy-durian-5
     Currently no crash
-    **running**
+    *running*
 
 8. `python -m train experiment=synthetics/associative_recall/base.yaml`
     This is a base class
