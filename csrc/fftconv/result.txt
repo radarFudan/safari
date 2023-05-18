@@ -1,0 +1,159 @@
+Processing /home/aiops/wangsd/github/safari-Hazy/csrc/fftconv
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Building wheels for collected packages: fftconv
+  Building wheel for fftconv (setup.py): started
+  Building wheel for fftconv (setup.py): finished with status 'error'
+  error: subprocess-exited-with-error
+  
+  × python setup.py bdist_wheel did not run successfully.
+  │ exit code: 1
+  ╰─> [60 lines of output]
+      
+      
+      torch.__version__  = 2.0.1+cu117
+      
+      
+      running bdist_wheel
+      /home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py:476: UserWarning: Attempted to use ninja as the BuildExtension backend but we could not find ninja.. Falling back to using the slow distutils backend.
+        warnings.warn(msg.format('we could not find ninja.'))
+      running build
+      running build_ext
+      Traceback (most recent call last):
+        File "<string>", line 2, in <module>
+        File "<pip-setuptools-caller>", line 34, in <module>
+        File "/home/aiops/wangsd/github/safari-Hazy/csrc/fftconv/setup.py", line 116, in <module>
+          setup(
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/__init__.py", line 87, in setup
+          return distutils.core.setup(**attrs)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/core.py", line 185, in setup
+          return run_commands(dist)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/core.py", line 201, in run_commands
+          dist.run_commands()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/dist.py", line 969, in run_commands
+          self.run_command(cmd)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/dist.py", line 1208, in run_command
+          super().run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/dist.py", line 988, in run_command
+          cmd_obj.run()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/wheel/bdist_wheel.py", line 325, in run
+          self.run_command("build")
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/cmd.py", line 318, in run_command
+          self.distribution.run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/dist.py", line 1208, in run_command
+          super().run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/dist.py", line 988, in run_command
+          cmd_obj.run()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/command/build.py", line 132, in run
+          self.run_command(cmd_name)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/cmd.py", line 318, in run_command
+          self.distribution.run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/dist.py", line 1208, in run_command
+          super().run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/dist.py", line 988, in run_command
+          cmd_obj.run()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/command/build_ext.py", line 84, in run
+          _build_ext.run(self)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/command/build_ext.py", line 346, in run
+          self.build_extensions()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 485, in build_extensions
+          compiler_name, compiler_version = self._check_abi()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 869, in _check_abi
+          _, version = get_compiler_abi_compatibility_and_version(compiler)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 337, in get_compiler_abi_compatibility_and_version
+          if not check_compiler_ok_for_platform(compiler):
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 291, in check_compiler_ok_for_platform
+          which = subprocess.check_output(['which', compiler], stderr=subprocess.STDOUT)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/subprocess.py", line 424, in check_output
+          return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/subprocess.py", line 528, in run
+          raise CalledProcessError(retcode, process.args,
+      subprocess.CalledProcessError: Command '['which', 'g++']' returned non-zero exit status 1.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for fftconv
+  Running setup.py clean for fftconv
+Failed to build fftconv
+Installing collected packages: fftconv
+  Running setup.py install for fftconv: started
+  Running setup.py install for fftconv: finished with status 'error'
+  error: subprocess-exited-with-error
+  
+  × Running setup.py install for fftconv did not run successfully.
+  │ exit code: 1
+  ╰─> [64 lines of output]
+      
+      
+      torch.__version__  = 2.0.1+cu117
+      
+      
+      running install
+      /home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+        warnings.warn(
+      running build
+      running build_ext
+      /home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py:476: UserWarning: Attempted to use ninja as the BuildExtension backend but we could not find ninja.. Falling back to using the slow distutils backend.
+        warnings.warn(msg.format('we could not find ninja.'))
+      Traceback (most recent call last):
+        File "<string>", line 2, in <module>
+        File "<pip-setuptools-caller>", line 34, in <module>
+        File "/home/aiops/wangsd/github/safari-Hazy/csrc/fftconv/setup.py", line 116, in <module>
+          setup(
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/__init__.py", line 87, in setup
+          return distutils.core.setup(**attrs)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/core.py", line 185, in setup
+          return run_commands(dist)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/core.py", line 201, in run_commands
+          dist.run_commands()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/dist.py", line 969, in run_commands
+          self.run_command(cmd)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/dist.py", line 1208, in run_command
+          super().run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/dist.py", line 988, in run_command
+          cmd_obj.run()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/command/install.py", line 68, in run
+          return orig.install.run(self)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/command/install.py", line 698, in run
+          self.run_command('build')
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/cmd.py", line 318, in run_command
+          self.distribution.run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/dist.py", line 1208, in run_command
+          super().run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/dist.py", line 988, in run_command
+          cmd_obj.run()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/command/build.py", line 132, in run
+          self.run_command(cmd_name)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/cmd.py", line 318, in run_command
+          self.distribution.run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/dist.py", line 1208, in run_command
+          super().run_command(command)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/dist.py", line 988, in run_command
+          cmd_obj.run()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/command/build_ext.py", line 84, in run
+          _build_ext.run(self)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/setuptools/_distutils/command/build_ext.py", line 346, in run
+          self.build_extensions()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 485, in build_extensions
+          compiler_name, compiler_version = self._check_abi()
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 869, in _check_abi
+          _, version = get_compiler_abi_compatibility_and_version(compiler)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 337, in get_compiler_abi_compatibility_and_version
+          if not check_compiler_ok_for_platform(compiler):
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 291, in check_compiler_ok_for_platform
+          which = subprocess.check_output(['which', compiler], stderr=subprocess.STDOUT)
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/subprocess.py", line 424, in check_output
+          return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+        File "/home/aiops/wangsd/anaconda3/envs/safari_layer_norm_debug/lib/python3.9/subprocess.py", line 528, in run
+          raise CalledProcessError(retcode, process.args,
+      subprocess.CalledProcessError: Command '['which', 'g++']' returned non-zero exit status 1.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> fftconv
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
