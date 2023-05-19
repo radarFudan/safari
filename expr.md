@@ -33,13 +33,15 @@ da2
 faithful-sponge-29
 Benchmark
 
-
+da3
 `python -m train experiment=lra/long-conv-lra-pathfinder`
+charmed-dragon-32
+Benchmark, size 6G
 
-Benchmark
-
-
+da
 `python -m train experiment=lra/long-conv-lra-pathx`
+lyric-mountain-31
+Benchmark, size 24G
 
-Benchmark
-
+da2
+`DATA_PATH=./data python -m train experiment=wt103/base`
