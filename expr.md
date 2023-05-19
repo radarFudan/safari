@@ -45,3 +45,8 @@ Benchmark, size 24G
 
 da2
 `DATA_PATH=./data python -m train experiment=wt103/base`
+unique-bush-49
+Benchmark, TODO which model? size 40G
+
+da3
+`DATA_PATH=./data python -m train experiment=wt103/hyena`

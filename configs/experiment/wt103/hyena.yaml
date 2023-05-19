@@ -5,25 +5,19 @@ defaults:
 
 model:
   _name_: lm
-  d_model: 768
-  n_layer: 12
-  d_inner: ${eval:4 * ${.d_model}}
+  d_model: 864 
+  d_inner: 1728 
+  n_layer: 18
   vocab_size: 50257
-  resid_dropout: 0.0
-  embed_dropout: 0.1
-  ssm_cfg:
-    d_state: 64
-    head_dim: 1
-    mode: diag
-    measure: diag-lin
-    lr: ${eval:"min(0.001, ${optimizer.lr})"}
-    use_fast_fftconv: True
-  attn_layer_idx: [1, 8]
-  attn_cfg:
-    num_heads: 12
-    use_flash_attn: True
-    fused_bias_fc: True
-    dropout: 0.1
+  embed_dropout: 0.0
+  layer:
+    _name_: hyena
+    emb_dim: 33 
+    filter_order: 64 
+    local_order: 3
+    l_max: 2048
+    modulate: False
+    w: 14
   fused_mlp: True
   fused_dropout_add_ln: True
   residual_in_fp32: True
