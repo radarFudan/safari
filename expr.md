@@ -48,5 +48,8 @@ da2
 unique-bush-49
 Benchmark, TODO which model? size 40G
 
-da3
+da2
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
+wandering-fire-54
+
+
