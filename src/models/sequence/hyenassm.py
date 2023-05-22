@@ -53,71 +53,6 @@ def mul_sum(q, y):
     return (q * y).sum(dim=1)
 
 
-class Sin(nn.Module):
-    def __init__(self, dim, w=10, train_freq=True):
-        super().__init__()
-        self.freq = (
-            nn.Parameter(w * torch.ones(1, dim))
-            if train_freq
-            else w * torch.ones(1, dim)
-        )
-
-    def forward(self, x):
-        return torch.sin(self.freq * x)
-
-
-class PositionalEmbedding(OptimModule):
-    def __init__(self, emb_dim: int, seq_len: int, lr_pos_emb: float = 1e-5, **kwargs):
-        """Complex exponential positional embeddings for Hyena filters."""
-        super().__init__()
-
-        self.seq_len = seq_len
-        # The time embedding fed to the filteres is normalized so that t_f = 1
-        t = torch.linspace(0, 1, self.seq_len)[None, :, None]  # 1, L, 1
-
-        if emb_dim > 1:
-            bands = (emb_dim - 1) // 2
-        # To compute the right embeddings we use the "proper" linspace
-        t_rescaled = torch.linspace(0, seq_len - 1, seq_len)[None, :, None]
-        w = 2 * math.pi * t_rescaled / seq_len  # 1, L, 1
-
-        f = torch.linspace(1e-4, bands - 1, bands)[None, None]
-        z = torch.exp(-1j * f * w)
-        z = torch.cat([t, z.real, z.imag], dim=-1)
-        self.register("z", z, lr=lr_pos_emb)
-        self.register("t", t, lr=0.0)
-
-    def forward(self, L):
-        return self.z[:, :L], self.t[:, :L]
-
-
-class ExponentialModulation(OptimModule):
-    def __init__(
-        self,
-        d_model,
-        fast_decay_pct=0.3,
-        slow_decay_pct=1.5,
-        target=1e-2,
-        modulation_lr=0.0,
-        modulate: bool = True,
-        shift: float = 0.0,
-        **kwargs,
-    ):
-        super().__init__()
-        self.modulate = modulate
-        self.shift = shift
-        max_decay = math.log(target) / fast_decay_pct
-        min_decay = math.log(target) / slow_decay_pct
-        deltas = torch.linspace(min_decay, max_decay, d_model)[None, None]
-        self.register("deltas", deltas, lr=modulation_lr)
-
-    def forward(self, t, x):
-        if self.modulate:
-            decay = torch.exp(-t * self.deltas.abs())
-            x = x * (decay + self.shift)
-        return x
-
-
 class HyenaSSMFilter(OptimModule):
     def __init__(
         self,
@@ -126,6 +61,7 @@ class HyenaSSMFilter(OptimModule):
         order,
         seq_len,
         hidden_dim,
+        constant_one=True,
     ):
         super().__init__()
         self.d_model = d_model
@@ -133,12 +69,20 @@ class HyenaSSMFilter(OptimModule):
         self.order = order
         self.seq_len = seq_len
         self.hidden_dim = hidden_dim
+        self.constant_one = constant_one
 
         # c, (d*order, m)
         # W, (m, m)
         # U, (m, d*order)
         # m shall be >= d * order
         # TODO, construct the c, W, U as parameters
+        if not self.constant_one:
+            pass
+            assert hidden_dim >= d * order
+            self.c = nn.Parameter(torch.randn(d * order, hidden_dim))
+            self.W = nn.Parameter(torch.randn(hidden_dim, hidden_dim))
+            self.U = nn.Parameter(torch.randn(hidden_dim, 1))
+            self.dt = nn.Parameter(torch.rand(1) * 0.1)  # dt <= 0.1
 
     def filter(self, L):
         # shape(1, L, d * (order - 1))
@@ -146,7 +90,18 @@ class HyenaSSMFilter(OptimModule):
 
         # TODO, parameterizes the filter based on c, W, U
 
-        return torch.ones(1, L, self.d * (self.order - 1))
+        if self.constant_one:
+            return torch.ones(1, L, self.d * (self.order - 1))
+        else:
+            return (
+                self.c
+                @ torch.matrix_exp(
+                    self.W.unsqueeze(0)
+                    * (torch.linspace(0, L, L).unsqueeze(-1).unsqueeze(-1))
+                    * self.dt
+                )
+                @ self.U
+            )
 
     def forward(self, x, L, k=None, bias=None, *args, **kwargs):
         if k is None:

@@ -1,0 +1,4 @@
+_name_: hyenassm-filter_nonconstant
+# seq_len: ${dataset.__l_max}
+hid_dim: 128
+constant_one: False
