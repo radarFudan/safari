@@ -53,9 +53,12 @@ Val perplexity, 1.006
 
 da2
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
-wandering-fire-54
+icy-fog-55
 Benchmark, use the model from evaluation on wt103 setting, 
 
-dagen2
-`DATA_PATH=./data python -m train experiment=wt103/hyenassm wandb=null`
+dagen2 - card 0 
+`CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyenassm`
+brisk-wave-58
+
+`CUDA_VISIBLE_DEVICES=1 DATA_PATH=./data python -m train experiment=wt103/hyenassm_debug wandb=null`
 

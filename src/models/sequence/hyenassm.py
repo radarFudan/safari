@@ -118,81 +118,35 @@ class ExponentialModulation(OptimModule):
         return x
 
 
-class HyenaFilter(OptimModule):
+class HyenaSSMFilter(OptimModule):
     def __init__(
         self,
         d_model,
-        emb_dim=3,  # dim of input to MLP, augments with positional encoding
-        order=16,  # width of the implicit MLP
-        fused_fft_conv=False,
-        seq_len=1024,
-        lr=1e-3,
-        lr_pos_emb=1e-5,
-        dropout=0.0,
-        w=1,  # frequency of periodic activations
-        wd=0,  # weight decay of kernel parameters
-        bias=True,
-        num_inner_mlps=2,
-        normalized=False,
-        **kwargs,
+        d,
+        order,
+        seq_len,
+        hidden_dim,
     ):
-        """
-        Implicit long filter with modulation.
-
-        Args:
-            d_model: number of channels in the input
-            emb_dim: dimension of the positional encoding (`emb_dim` - 1) // 2 is the number of bands
-            order: width of the FFN
-            num_inner_mlps: number of inner linear layers inside filter MLP
-
-        Note:
-            filter_dropout is not implemented
-        """
         super().__init__()
         self.d_model = d_model
-        self.use_bias = bias
-        self.fused_fft_conv = fused_fft_conv
-        self.bias = nn.Parameter(torch.randn(self.d_model))
-        self.dropout = nn.Dropout(dropout)
-
-        act = Sin(dim=order, w=w)
-        self.emb_dim = emb_dim
-        assert (
-            emb_dim % 2 != 0 and emb_dim >= 3
-        ), "emb_dim must be odd and greater or equal to 3 (time, sine and cosine)"
+        self.d = d
+        self.order = order
         self.seq_len = seq_len
+        self.hidden_dim = hidden_dim
 
-        self.pos_emb = PositionalEmbedding(emb_dim, seq_len, lr_pos_emb)
+        # c, (d*order, m)
+        # W, (m, m)
+        # U, (m, d*order)
+        # m shall be >= d * order
+        # TODO, construct the c, W, U as parameters
 
-        # uses a variable number of inner linear layers
-        self.implicit_filter = nn.Sequential(
-            nn.Linear(emb_dim, order),
-            act,
-        )
-        for i in range(num_inner_mlps):
-            self.implicit_filter.append(nn.Linear(order, order))
-            self.implicit_filter.append(act)
-        # final linear layer
-        self.implicit_filter.append(nn.Linear(order, d_model, bias=False))
+    def filter(self, L):
+        # shape(1, L, d * (order - 1))
+        assert L <= self.seq_len
 
-        self.modulation = ExponentialModulation(d_model, **kwargs)
+        # TODO, parameterizes the filter based on c, W, U
 
-        self.normalized = normalized
-        for c in self.implicit_filter.children():
-            for name, v in c.state_dict().items():
-                optim = {"weight_decay": wd, "lr": lr}
-                setattr(getattr(c, name), "_optim", optim)
-
-    def filter(self, L, *args, **kwargs):
-        z, t = self.pos_emb(L)
-        h = self.implicit_filter(z)
-
-        h = self.modulation(t, h)
-
-        if self.normalized:
-            h = h / torch.norm(h, dim=-1, p=1, keepdim=True)
-
-        return h
+        return torch.ones(1, L, self.d * (self.order - 1))
 
     def forward(self, x, L, k=None, bias=None, *args, **kwargs):
         if k is None:
@@ -220,7 +174,7 @@ class HyenaFilter(OptimModule):
         return y
 
 
-class HyenaOperator(nn.Module):
+class HyenaSSMOperator(nn.Module):
     def __init__(
         self,
         d_model,
@@ -326,10 +280,9 @@ class HyenaOperator(nn.Module):
 
         self.filter_fn = filter_cls(
             self.head_dim * self.inner_factor * (self.order - 1),
-            order=self.filter_order,
+            d=self.head_dim,
+            order=(self.order - 1),
             seq_len=self.l_max,
-            channels=1,
-            dropout=self.filter_dropout,
             **filter_args,
         )
         if self.jit_filter:

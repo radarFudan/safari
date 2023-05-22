@@ -7,7 +7,7 @@ gradient_clip_val: 0.0 # Gradient clipping
 log_every_n_steps: 10
 precision: 16
 progress_bar_refresh_rate: 1
-weights_summary: top # Set to 'full' to see every layer
+weights_summary: full # Set to 'full' to see every layer
 track_grad_norm: -1 # Set to 2 to track norms of gradients
 limit_train_batches: 1.0
 limit_val_batches: 1.0

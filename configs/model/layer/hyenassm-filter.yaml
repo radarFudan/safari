@@ -1,0 +1,3 @@
+_name_: hyenassm-filter
+# seq_len: ${dataset.__l_max}
+hid_dim: 128

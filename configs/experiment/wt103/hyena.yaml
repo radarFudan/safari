@@ -47,7 +47,8 @@ scheduler:
   lr_min: ${eval:0.1 * ${optimizer.lr}}
 
 optimizer:
-  lr: 6e-4
+  # lr: 6e-4
+  lr: 3e-4
   weight_decay: 0.1
 
 train:
