@@ -42,14 +42,20 @@ da
 `python -m train experiment=lra/long-conv-lra-pathx`
 lyric-mountain-31
 Benchmark, size 24G
+Val Accuracy, 97.57%
+    Interesting thing is the val accuracy is monotonic increasing but the val loss is not monotonic
 
 da2
 `DATA_PATH=./data python -m train experiment=wt103/base`
 unique-bush-49
-Benchmark, TODO which model? size 40G
+Benchmark, which model, seems to be SSM+attention size 40G
+Val perplexity, 1.006
 
 da2
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
 wandering-fire-54
+Benchmark, use the model from evaluation on wt103 setting, 
 
+dagen2
+`DATA_PATH=./data python -m train experiment=wt103/hyenassm wandb=null`
 
