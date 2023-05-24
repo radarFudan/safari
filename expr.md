@@ -53,17 +53,18 @@ Val perplexity, 1.006
 
 da2
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
-icy-fog-55
+icy-fog-55, morning-river-60
 Benchmark, use the model from evaluation on wt103 setting, 
 
 dagen2 - card 0 
 `CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyenassm`
-brisk-wave-58
+brisk-wave-58, atomic-breeze-61
 Constant in h
 
 `CUDA_VISIBLE_DEVICES=1 DATA_PATH=./data python -m train experiment=wt103/hyenassm_debug`
-deft-spaceship-59
+deft-spaceship-59, dazzling-leaf-62
 SSM in h
 
 `CUDA_VISIBLE_DEVICES=1 DATA_PATH=./data python -m train experiment=wt103/hyena_rec wandb=null`
 turn h into recursive
+ 
