@@ -65,6 +65,7 @@ Constant in h
 deft-spaceship-59, dazzling-leaf-62
 SSM in h
 
-`CUDA_VISIBLE_DEVICES=1 DATA_PATH=./data python -m train experiment=wt103/hyena_rec wandb=null`
-turn h into recursive
+`CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_reproduce wandb=null`
+devoted-totem-63
+with 125M version Hyena
  
