@@ -6,19 +6,19 @@ move the code into the parent folder
 `python3 runtime_hyena_flashmha.py > results.txt`
 
 Summarize:
-listops,    multiclass_classification
-imdb,       multiclass_classification
-cifar,      multiclass_classification
-aan,        multiclass_classification
+listops, multiclass_classification
+imdb, multiclass_classification
+cifar, multiclass_classification
+aan, multiclass_classification
 pathfinder, multiclass_classification
-pathx,      multiclass_classification
+pathx, multiclass_classification
 
 da2:
 `python -m train experiment=lra/long-conv-lra-listops`
 olive-puddle-24
 Benchmark
 
-da: 
+da:
 `python -m train experiment=lra/long-conv-lra-imdb`
 clean-hill-26
 Benchmark
@@ -43,7 +43,7 @@ da
 lyric-mountain-31
 Benchmark, size 24G
 Val Accuracy, 97.57%
-    Interesting thing is the val accuracy is monotonic increasing but the val loss is not monotonic
+Interesting thing is the val accuracy is monotonic increasing but the val loss is not monotonic
 
 da2
 `DATA_PATH=./data python -m train experiment=wt103/base`
@@ -54,18 +54,17 @@ Val perplexity, 1.006
 da2
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
 icy-fog-55, morning-river-60
-Benchmark, use the model from evaluation on wt103 setting, 
+Benchmark, use the model from evaluation on wt103 setting,
 
-dagen2 - card 0 
+dagen2 - card 0
 `CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyenassm`
 brisk-wave-58, atomic-breeze-61
-Constant in h
+Constant in $h$
 
 `CUDA_VISIBLE_DEVICES=1 DATA_PATH=./data python -m train experiment=wt103/hyenassm_debug`
 deft-spaceship-59, dazzling-leaf-62
-SSM in h
+SSM in $h$
 
 `CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_reproduce wandb=null`
 devoted-totem-63
 with 125M version Hyena
- 
