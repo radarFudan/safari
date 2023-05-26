@@ -61,10 +61,23 @@ dagen2 - card 0
 brisk-wave-58, atomic-breeze-61
 Constant in $h$
 
+dagen2 - card 1
 `CUDA_VISIBLE_DEVICES=1 DATA_PATH=./data python -m train experiment=wt103/hyenassm_debug`
 deft-spaceship-59, dazzling-leaf-62
 SSM in $h$
 
-`CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_reproduce wandb=null`
+dagen4
+`CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_reproduce`
 devoted-totem-63
 with 125M version Hyena
+
+dagen4
+CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_reproduce trainer.max_epochs=200 train.ckpt="/home/aiops/wangsd/github/safari-Hazy/outputs/2023-05-24/10-23-01-537515/checkpoints/last.ckpt" optimizer.lr=0.0001 optimizer.weight_decay=0
+restful-plant-64
+5 epochs, smaller learning rate(0.0001), no effects, stopped
+
+dagen4
+CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_reproduce trainer.max_epochs=200 train.ckpt="/home/aiops/wangsd/github/safari-Hazy/outputs/2023-05-24/10-23-01-537515/checkpoints/last.ckpt" optimizer.lr=0.0006 optimizer.weight_decay=0.1 optimizer.betas=[0.9,0.98]
+eager-yogurt 66, same weight decay
+
+CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_reproduce trainer.max_epochs=200 train.ckpt="/home/aiops/wangsd/github/safari-Hazy/outputs/2023-05-24/09-26-37-278987/checkpoints/last.ckpt" optimizer.lr=0.0006 optimizer.weight_decay=0.1 optimizer.betas=[0.9,0.98]
