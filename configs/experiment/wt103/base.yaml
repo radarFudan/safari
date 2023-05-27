@@ -31,7 +31,7 @@ model:
 
 trainer:
   accelerator: gpu
-  devices: 1
+  devices: 2
   num_nodes: 1
   accumulate_grad_batches: ${div_up:${train.global_batch_size}, ${eval:${trainer.devices} * ${dataset.batch_size} * ${trainer.num_nodes}}}
   max_epochs: 100
@@ -42,7 +42,7 @@ trainer:
 dataset:
   # batch_size: 32  # Per GPU
   # batch_size: ${eval:"8 if ${train.gpu_mem} <= 16 else (16 if ${train.gpu_mem} <= 24 else 32)"}
-  batch_size: 20 # 8 use 15G, 16 use 30G, 24 use 45G, 20 should be 37.5, reasonable
+  batch_size: 16 # 8 use 15G, 16 use 30G, 24 use 45G, 20 should be 37.5, reasonable
   max_length: 1024
 
 scheduler:
@@ -59,4 +59,4 @@ optimizer:
 train:
   gpu_mem: ${eval:"round(float(__import__('subprocess').check_output('nvidia-smi -i 0 --query-gpu=memory.total --format=csv,noheader,nounits', shell=True).strip().decode()) / 1000)"}
   seed: 2222
-  global_batch_size: 512  
+  global_batch_size: 512

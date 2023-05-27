@@ -1,27 +1,26 @@
 # @package _global_
 defaults:
   - /pipeline: wt103
+  # - /model: transformer
   - override /scheduler: cosine_warmup_timm
 
 model:
-  _name_: lm
-  d_model: 864
-  d_inner: 1728
-  n_layer: 18
+  _name_: lm_simple
+  d_model: 768
+  n_layer: 2
+  d_inner: ${eval:4 * ${.d_model}}
   vocab_size: 50257
-  embed_dropout: 0.0
-  layer:
-    _name_: hyena
-    emb_dim: 33
-    filter_order: 64
-    local_order: 3
-    l_max: 2048
-    modulate: False
-    w: 14
-  fused_mlp: True
-  fused_dropout_add_ln: True
-  residual_in_fp32: True
-  pad_vocab_size_multiple: 8
+  resid_dropout: 0.0
+  embed_dropout: 0.1
+  attn_layer_idx: [0, 1]
+  attn_cfg:
+    num_heads: 12
+    dropout: 0.1
+  max_position_embeddings: ${dataset.__l_max} # positional embeddings
+
+encoder: position_id # get position ID
+# encoder:
+#   _name_: position
 
 trainer:
   accelerator: gpu
@@ -47,9 +46,8 @@ scheduler:
   lr_min: ${eval:0.1 * ${optimizer.lr}}
 
 optimizer:
-  # lr: 6e-4
-  lr: 3e-4
-  weight_decay: 1e-4
+  lr: 6e-4
+  weight_decay: 0.1
 
 train:
   gpu_mem: ${eval:"round(float(__import__('subprocess').check_output('nvidia-smi -i 0 --query-gpu=memory.total --format=csv,noheader,nounits', shell=True).strip().decode()) / 1000)"}

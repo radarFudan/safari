@@ -2,7 +2,6 @@
 defaults:
   - base
   - override layer: transformer
-
-encoder:
-  _name_: position
-  dropout: ${..dropout}
+# encoder:
+#   _name_: position
+#   dropout: ${..dropout}
