@@ -91,10 +91,20 @@ Current schedule: reproduce the hyena:
    unique-oath-70, long-conv
 
    1.1 transformer:
+
    `DATA_PATH=./data python -m train experiment=synthetics/induction_head/transformer`
    87
-   `DATA_PATH=./data python -m train experiment=wt103/transformer`
-   dainty-deluge-88
-   `DATA_PATH=./data python -m train experiment=wt103/transformer`
 
-   Next, try to change the position encoding
+   `DATA_PATH=./data python -m train experiment=wt103/transformer`
+    dainty-deluge-88
+
+   `DATA_PATH=./data python -m train experiment=wt103/transformer`
+    giddy-wave-89
+    Next, try to change the position encoding
+    bugged
+
+   `DATA_PATH=./data python -m train experiment=wt103/transformer`
+    Consider add layers from 2 to 12, attention layers still [0, 1]
+
+
+
