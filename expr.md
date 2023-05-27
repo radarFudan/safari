@@ -81,6 +81,7 @@ CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_r
 eager-yogurt 66, same weight decay
 
 CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyena_reproduce trainer.max_epochs=200 train.ckpt="/home/aiops/wangsd/github/safari-Hazy/outputs/2023-05-24/09-26-37-278987/checkpoints/last.ckpt" optimizer.lr=0.0006 optimizer.weight_decay=0.1 optimizer.betas=[0.9,0.98]
+67?
 
 Current schedule: reproduce the hyena:
 
@@ -91,10 +92,9 @@ Current schedule: reproduce the hyena:
 
    1.1 transformer:
    `DATA_PATH=./data python -m train experiment=synthetics/induction_head/transformer`
+   87
+   `DATA_PATH=./data python -m train experiment=wt103/transformer`
+   dainty-deluge-88
    `DATA_PATH=./data python -m train experiment=wt103/transformer`
 
-   Benchmark, which model, seems to be SSM+attention size 40G
-
-2. Tune the batchsize via gradient accumulation for batchsize 256
-
-3.
+   Next, try to change the position encoding
