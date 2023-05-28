@@ -95,16 +95,24 @@ Current schedule: reproduce the hyena:
    `DATA_PATH=./data python -m train experiment=synthetics/induction_head/transformer`
    87
 
+   dagen8
    `DATA_PATH=./data python -m train experiment=wt103/transformer`
     dainty-deluge-88
+    train loss 2.88, test loss 3.23 perplexity 25
 
    `DATA_PATH=./data python -m train experiment=wt103/transformer`
     giddy-wave-89
     Next, try to change the position encoding
     bugged
 
+    dagen2
    `DATA_PATH=./data python -m train experiment=wt103/transformer`
     Consider add layers from 2 to 12, attention layers still [0, 1]
+    rural-brook-91
+
+    dagen4
+    `DATA_PATH=./data python -m train experiment=wt103/transformer`
+    layers 12, attention at [1, 8]
 
 
 
