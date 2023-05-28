@@ -98,7 +98,7 @@ Current schedule: reproduce the hyena:
    dagen8
    `DATA_PATH=./data python -m train experiment=wt103/transformer`
     dainty-deluge-88
-    train loss 2.88, test loss 3.23 perplexity 25
+    train loss 2.88, preplexity 17.851, test loss 3.23, perplexity 25
 
    `DATA_PATH=./data python -m train experiment=wt103/transformer`
     giddy-wave-89
@@ -108,11 +108,12 @@ Current schedule: reproduce the hyena:
     dagen2
    `DATA_PATH=./data python -m train experiment=wt103/transformer`
     Consider add layers from 2 to 12, attention layers still [0, 1]
-    rural-brook-91
+    rural-brook-91, overfitted
 
     dagen4
     `DATA_PATH=./data python -m train experiment=wt103/transformer`
     layers 12, attention at [1, 8]
+    worthy-jazz-92
 
 
 

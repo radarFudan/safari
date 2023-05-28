@@ -12,7 +12,7 @@ model:
   vocab_size: 50257
   resid_dropout: 0.0
   embed_dropout: 0.1
-  attn_layer_idx: [0,1]
+  attn_layer_idx: [1,8]
   attn_cfg:
     num_heads: 12
     dropout: 0.1
