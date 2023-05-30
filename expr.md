@@ -90,30 +90,28 @@ Current schedule: reproduce the hyena:
    Check with the transformer-xl, the data is correct
    unique-oath-70, long-conv
 
-   1.1 transformer:
+`DATA_PATH=./data python -m train experiment=synthetics/induction_head/transformer`
+87
 
-   `DATA_PATH=./data python -m train experiment=synthetics/induction_head/transformer`
-   87
+dagen8
+`DATA_PATH=./data python -m train experiment=wt103/transformer`
+dainty-deluge-88
+train loss 2.88, preplexity 17.851, test loss 3.23, perplexity 25
 
-   dagen8
-   `DATA_PATH=./data python -m train experiment=wt103/transformer`
-    dainty-deluge-88
-    train loss 2.88, preplexity 17.851, test loss 3.23, perplexity 25
+`DATA_PATH=./data python -m train experiment=wt103/transformer`
+giddy-wave-89
+Next, try to change the position encoding
+bugged
 
-   `DATA_PATH=./data python -m train experiment=wt103/transformer`
-    giddy-wave-89
-    Next, try to change the position encoding
-    bugged
+dagen2
+`DATA_PATH=./data python -m train experiment=wt103/transformer`
+Consider add layers from 2 to 12, attention layers still [0, 1]
+rural-brook-91, overfitted
 
-    dagen2
-   `DATA_PATH=./data python -m train experiment=wt103/transformer`
-    Consider add layers from 2 to 12, attention layers still [0, 1]
-    rural-brook-91, overfitted
+dagen4
+`DATA_PATH=./data python -m train experiment=wt103/transformer`
+layers 12, attention at [1, 8]
+worthy-jazz-92, overfitted
+Loss too small
 
-    dagen4
-    `DATA_PATH=./data python -m train experiment=wt103/transformer`
-    layers 12, attention at [1, 8]
-    worthy-jazz-92
-
-
-
+TODO: Does the model maintain causality?
