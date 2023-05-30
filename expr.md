@@ -1,4 +1,5 @@
-Get stuck in building wheels for collected packages: dropout-layer-norm - use CUDA 11.7 runtime, resolved
+Environment required:
+CUDA11.7, driver 450.172(+) or 470.82(+)
 
 `python evals/lambada.py --ckpt_path ./checkpoint/hyena_small_150b_tok.ckpt --data_dir ./data`
 
