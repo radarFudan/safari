@@ -96,8 +96,9 @@ Current schedule: reproduce the hyena:
 
 dagen8
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
-dainty-deluge-88
+dainty-deluge-88, ethereal-sun-93
 train loss 2.88, preplexity 17.851, test loss 3.23, perplexity 25
+train loss 2.84, preplexity 17.15008, test loss 3.25, perplexity 25.98
 
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
 giddy-wave-89
