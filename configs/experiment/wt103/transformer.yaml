@@ -12,8 +12,9 @@ model:
   vocab_size: 50257
   resid_dropout: 0.0
   embed_dropout: 0.1
-  attn_layer_idx: [1,8]
+  attn_layer_idx: [1, 8]
   attn_cfg:
+    causal: true
     num_heads: 12
     dropout: 0.1
   max_position_embeddings: ${dataset.__l_max} # positional embeddings
@@ -23,7 +24,7 @@ encoder: position_id # get position ID
 
 trainer:
   accelerator: gpu
-  devices: 1
+  devices: 
   num_nodes: 1
   accumulate_grad_batches: ${div_up:${train.global_batch_size}, ${eval:${trainer.devices} * ${dataset.batch_size} * ${trainer.num_nodes}}}
   max_epochs: 100
