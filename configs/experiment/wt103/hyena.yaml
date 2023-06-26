@@ -17,8 +17,8 @@ model:
     emb_dim: 33
     filter_order: 64
     local_order: 3
-    l_max: ${dataset.max_length}
-    fused_fft_conv: True
+    l_max: 2048
+    fused_fft_conv: False
     modulate: True # What's the usage of modulate
     w: 14
     lr: ${optimizer.lr}
