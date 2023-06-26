@@ -57,7 +57,7 @@ Benchmark, which model, seems to be SSM+attention size 40G
 Val perplexity, 1.006
 
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
-icy-fog-55, morning-river-60
+icy-fog-55, morning-river-60, drawn-sea-106 (153M),
 Benchmark, use the model from evaluation on wt103 setting,
 
 `CUDA_VISIBLE_DEVICES=0 DATA_PATH=./data python -m train experiment=wt103/hyenassm`
@@ -112,5 +112,5 @@ train loss, perplexity, test loss, perplexity
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
 
 layers 12, attention at [1, 8]
-manually add causal constraints
+manually add causal constraints? How do I do this?
 radiant-thunder-104

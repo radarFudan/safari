@@ -1,9 +1,9 @@
 # @package _global_
 defaults:
   - /pipeline: wt103
-  # - /model: transformer
   - override /scheduler: cosine_warmup_timm
 
+model_name: transformer-benchmark # 153
 model:
   _name_: lm_simple
   d_model: 768
@@ -19,12 +19,12 @@ model:
     dropout: 0.1
   max_position_embeddings: ${dataset.__l_max} # positional embeddings
 
-encoder: position_id # get position ID
+# encoder: position_id # get position ID
 # encoder: position
 
 trainer:
   accelerator: gpu
-  devices: 
+  devices: 4
   num_nodes: 1
   accumulate_grad_batches: ${div_up:${train.global_batch_size}, ${eval:${trainer.devices} * ${dataset.batch_size} * ${trainer.num_nodes}}}
   max_epochs: 100
