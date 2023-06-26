@@ -3,37 +3,18 @@ defaults:
   - /pipeline: wt103
   - override /scheduler: cosine_warmup_timm
 
-# model: # 153, finished in hyena
-#   _name_: lm
-#   d_model: 864 
-#   d_inner: 1728 
-#   n_layer: 18
-#   vocab_size: 50257
-#   embed_dropout: 0.0
-#   layer:
-#     _name_: hyena
-#     emb_dim: 33 
-#     filter_order: 64 
-#     local_order: 3
-#     l_max: 2048
-#     modulate: False
-#     w: 14
-#   fused_mlp: True
-#   fused_dropout_add_ln: True
-#   residual_in_fp32: True
-#   pad_vocab_size_multiple: 8
-
-model: # 125
+model_name: hyena-small # 125
+model:
   _name_: lm
-  d_model: 768 
-  d_inner: 3072 
+  d_model: 768
+  d_inner: 3072
   n_layer: 12
   vocab_size: 50257
   embed_dropout: 0.0
   layer:
     _name_: hyena
-    emb_dim: 33 
-    filter_order: 64 
+    emb_dim: 33
+    filter_order: 64
     local_order: 3
     l_max: 2048
     modulate: False
@@ -43,17 +24,18 @@ model: # 125
   residual_in_fp32: True
   pad_vocab_size_multiple: 8
 
-# model: # 125-slim
+# model_name: hyena-small # 125-slim
+# model:
 #   _name_: lm
-#   d_model: 768 
+#   d_model: 768
 #   d_inner: 1536
 #   n_layer: 18
 #   vocab_size: 50257
 #   embed_dropout: 0.0
 #   layer:
 #     _name_: hyena
-#     emb_dim: 33 
-#     filter_order: 64 
+#     emb_dim: 33
+#     filter_order: 64
 #     local_order: 3
 #     l_max: 2048
 #     modulate: False
@@ -63,10 +45,9 @@ model: # 125
 #   residual_in_fp32: True
 #   pad_vocab_size_multiple: 8
 
-
 trainer:
   accelerator: gpu
-  devices: 1
+  devices: 4
   num_nodes: 1
   accumulate_grad_batches: ${div_up:${train.global_batch_size}, ${eval:${trainer.devices} * ${dataset.batch_size} * ${trainer.num_nodes}}}
   max_epochs: 100
@@ -77,7 +58,7 @@ trainer:
 dataset:
   # batch_size: 32  # Per GPU
   # batch_size: ${eval:"8 if ${train.gpu_mem} <= 16 else (16 if ${train.gpu_mem} <= 24 else 32)"}
-  batch_size: 20 # 8 use 15G, 16 use 30G, 24 use 45G, 20 should be 37.5, reasonable
+  batch_size: 16 # 8 use 15G, 16 use 30G, 24 use 45G, 20 should be 37.5, reasonable
   max_length: 1024
 
 scheduler:
@@ -88,11 +69,10 @@ scheduler:
   lr_min: ${eval:0.1 * ${optimizer.lr}}
 
 optimizer:
-  # lr: 6e-4
-  lr: 3e-4
+  lr: 6e-4
   weight_decay: 0.1
 
 train:
   gpu_mem: ${eval:"round(float(__import__('subprocess').check_output('nvidia-smi -i 0 --query-gpu=memory.total --format=csv,noheader,nounits', shell=True).strip().decode()) / 1000)"}
   seed: 2222
-  global_batch_size: 512  
+  global_batch_size: 512
