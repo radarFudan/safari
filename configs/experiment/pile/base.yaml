@@ -10,7 +10,7 @@ trainer:
   accumulate_grad_batches: ${div_up:${train.global_batch_size}, ${eval:${trainer.devices} * ${dataset.batch_size} * ${trainer.num_nodes}}}
   max_steps: 800000
   val_check_interval: ${eval:2000 * ${.accumulate_grad_batches}}
-  check_val_every_n_epoch: null  # We don't care about epoch boundary
+  check_val_every_n_epoch: null # We don't care about epoch boundary
   precision: bf16
   gradient_clip_val: 1.0
   strategy: null
