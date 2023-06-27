@@ -124,10 +124,15 @@ radiant-thunder-104
 Mixing of attention layer and something I'm not sure about.
 
 `DATA_PATH=./data python -m train experiment=wt103/base`
+scarlet-aardvark-115
 
 ### What's implemented in the hyena?
 
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
+
+<!-- misty-haze-111 (with attention-layer) -->
+
+astral-shadow-116
 
 ### What's implemented in the transformer?
 
