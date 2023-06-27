@@ -6,6 +6,8 @@ CUDA11.7, driver 450.172(+) or 470.82(+)
 
 `python evals/lambada.py --ckpt_path ./checkpoint/hyena_small_150b_tok.ckpt --data_dir ./data`
 
+<!-- This checkpoint cannot be directly loaded into the checkpoint -->
+
 move the code into the parent folder
 `python3 runtime_hyena_flashmha.py > results.txt`
 
@@ -114,3 +116,17 @@ train loss, perplexity, test loss, perplexity
 layers 12, attention at [1, 8]
 manually add causal constraints? How do I do this?
 radiant-thunder-104
+
+## Restart Safari codebase
+
+### What's implemented in the base?
+
+Mixing of attention layer and something I'm not sure about.
+
+### What's implemented in the hyena?
+
+DATA_PATH=./data python -m train experiment=wt103/hyena
+
+### What's implemented in the transformer?
+
+DATA_PATH=./data python -m train experiment=wt103/transformer

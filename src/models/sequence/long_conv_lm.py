@@ -53,7 +53,9 @@ def create_mixer_cls(
         if process_group is not None
         else {}
     )
+
     if attn_layer_idx is not None and layer_idx in attn_layer_idx:
+        # print(f"Layer {layer_idx} is {layer}, attention constructed, in long_conv_lm")
         causal = True if attn_cfg is None else attn_cfg.pop("causal", True)
         fused_bias_fc = (
             False if attn_cfg is None else attn_cfg.get("fused_bias_fc", False)
@@ -74,6 +76,7 @@ def create_mixer_cls(
             **factory_kwargs,
         )
     else:
+        # print(f"Layer {layer_idx} is {layer}, in long_conv_lm")
         fused_bias_fc = False if layer is None else layer.get("fused_bias_fc", False)
         if process_group is not None:
             assert fused_bias_fc, "TensorParallel SSM requires fused_bias_fc"
@@ -85,6 +88,7 @@ def create_mixer_cls(
             **factory_kwargs,
             **parallel_kwargs,
         )
+        # print(mixer_cls)
         # mixer_cls = partial(ssm_cls, layer_idx=layer_idx,
         #                     **(ssm_cfg if ssm_cfg is not None else {}),
         #                     **parallel_kwargs, **factory_kwargs)
