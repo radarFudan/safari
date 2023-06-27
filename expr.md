@@ -123,10 +123,12 @@ radiant-thunder-104
 
 Mixing of attention layer and something I'm not sure about.
 
+`DATA_PATH=./data python -m train experiment=wt103/base`
+
 ### What's implemented in the hyena?
 
-DATA_PATH=./data python -m train experiment=wt103/hyena
+`DATA_PATH=./data python -m train experiment=wt103/hyena`
 
 ### What's implemented in the transformer?
 
-DATA_PATH=./data python -m train experiment=wt103/transformer
+`DATA_PATH=./data python -m train experiment=wt103/transformer`
