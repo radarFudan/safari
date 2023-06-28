@@ -146,5 +146,5 @@ hearty-deluge-123
 
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
 
-vocal-forest-124
-151M, 2.132376194000244
+efficient-tree-125
+123M,
