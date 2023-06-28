@@ -1,0 +1,21 @@
+# @package _global_
+defaults:
+  - /experiment/wt103/base.yaml
+
+model_name: transformer-benchmark-124 # 124M lm_simple
+model:
+  _name_: lm_simple
+  d_model: 768
+  n_layer: 12
+  d_inner: ${eval:4 * ${.d_model}}
+  vocab_size: 50257
+  resid_dropout: 0.0
+  embed_dropout: 0.1
+  attn_layer_idx: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  attn_cfg:
+    num_heads: 12
+    dropout: 0.1
+    use_flash_attn: False
+  max_position_embeddings: ${dataset.__l_max} # positional embeddings
+
+encoder: position_id # get position ID

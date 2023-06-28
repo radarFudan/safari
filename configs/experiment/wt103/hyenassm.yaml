@@ -2,21 +2,25 @@
 defaults:
   - /experiment/wt103/base.yaml
 
+model_name: hyenassm
 model:
   _name_: lm
   d_model: 864
   d_inner: 1728
   n_layer: 18
   vocab_size: 50257
-  embed_dropout: 0.0
+  embed_dropout: 0.1
+  attn_layer_idx: []
   layer:
     _name_: hyenassm
     emb_dim: 33
     filter_order: 64
     local_order: 3
     l_max: 2048
+    fused_fft_conv: False
     modulate: False
-    w: 14
+    lr: ${optimizer.lr}
+    lr_pos_emb: ${optimizer.lr}
   fused_mlp: True
   fused_dropout_add_ln: True
   residual_in_fp32: True

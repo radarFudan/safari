@@ -126,14 +126,19 @@ Mixing of attention layer and something I'm not sure about.
 `DATA_PATH=./data python -m train experiment=wt103/base`
 scarlet-aardvark-115
 
+test loss goes to 1.125, no idea what's wrong with the code
+
 ### What's implemented in the hyena?
 
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
 
-<!-- misty-haze-111 (with attention-layer) -->
+<!-- misty-haze-111 (with attention-layer at 1 and 8, test loss 22.074) -->
 
 astral-shadow-116
+test loss 25.829, overfitted
 
 ### What's implemented in the transformer?
 
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
+
+whole-sound-117

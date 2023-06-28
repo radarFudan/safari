@@ -35,7 +35,13 @@ class SelfAttention(nn.Module):
                            (default: 0.0)
     """
 
-    def __init__(self, causal=False, softmax_scale=None, attention_dropout=0.0):
+    def __init__(
+        self,
+        causal=False,
+        softmax_scale=None,
+        attention_dropout=0.0,
+        **kwargs,
+    ):
         super().__init__()
         self.causal = causal
         self.softmax_scale = softmax_scale
@@ -92,6 +98,7 @@ class MHA(nn.Module):
         return_residual=False,
         device=None,
         dtype=None,
+        **kwargs,
     ) -> None:
         """
         return_residual: whether to return the input x along with the output. This is for
@@ -190,6 +197,7 @@ class GPT2Embeddings(nn.Module):
         word_embed_proj_dim=None,
         device=None,
         dtype=None,
+        **kwargs,
     ):
         """
         If max_position_embeddings <= 0, there's no position embeddings
@@ -248,6 +256,7 @@ class Mlp(nn.Module):
         return_residual=False,
         device=None,
         dtype=None,
+        **kwargs,
     ):
         """
         From https://github.com/HazyResearch/flash-attention/blob/main/flash_attn/modules/mlp.py
@@ -283,6 +292,7 @@ class Block(nn.Module):
         drop_path2=0.0,
         return_residual=False,
         residual_in_fp32=False,
+        **kwargs,
     ):
         """
         From https://github.com/HazyResearch/flash-attention/blob/main/flash_attn/modules/block.py
@@ -388,6 +398,7 @@ def create_mixer_cls(
     layer_idx=None,
     device=None,
     dtype=None,
+    **kwargs,
 ):
     factory_kwargs = {"device": device, "dtype": dtype}
     if attn_layer_idx is not None and layer_idx in attn_layer_idx:
@@ -409,7 +420,13 @@ def create_mixer_cls(
     return mixer_cls
 
 
-def create_mlp_cls(d_model, d_inner=None, device=None, dtype=None):
+def create_mlp_cls(
+    d_model,
+    d_inner=None,
+    device=None,
+    dtype=None,
+    **kwargs,
+):
     factory_kwargs = {"device": device, "dtype": dtype}
     inner_dim = d_inner if d_inner is not None else 4 * d_model
 
@@ -436,6 +453,7 @@ def create_block(
     layer_idx=None,
     device=None,
     dtype=None,
+    **kwargs,
 ):
     factory_kwargs = {"device": device, "dtype": dtype}
     mixer_cls = create_mixer_cls(
@@ -526,7 +544,7 @@ class LMBackbone(nn.Module):
         residual_in_fp32=False,
         device=None,
         dtype=None,
-        **kwargs
+        **kwargs,
     ) -> None:
         factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
@@ -607,7 +625,7 @@ class SimpleLMHeadModel(nn.Module):
         # No sequence_parallel
         device=None,
         dtype=None,
-        **kwargs
+        **kwargs,
     ) -> None:
         factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
