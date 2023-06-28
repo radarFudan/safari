@@ -139,6 +139,12 @@ test loss 25.829, overfitted
 
 ### What's implemented in the transformer?
 
+`DATA_PATH=./data python -m train experiment=wt103/transformer_simple`
+
+hearty-deluge-123
+124M, 2.2384443283081055
+
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
 
-whole-sound-117
+vocal-forest-124
+151M, 2.132376194000244
