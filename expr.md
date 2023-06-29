@@ -137,6 +137,10 @@ test loss goes to 1.125, no idea what's wrong with the code
 astral-shadow-116
 test loss 25.829, overfitted
 
+autumn-sound-126, 153M
+Increased both dropout to 0.2
+test loss
+
 ### What's implemented in the transformer?
 
 `DATA_PATH=./data python -m train experiment=wt103/transformer_simple`
