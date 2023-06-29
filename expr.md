@@ -134,21 +134,25 @@ test loss goes to 1.125, no idea what's wrong with the code
 
 <!-- misty-haze-111 (with attention-layer at 1 and 8, test loss 22.074) -->
 
-astral-shadow-116
-test loss 25.829, overfitted
+astral-shadow-116, 153M
+perplexity 25.829, overfitted, residual and embedding dropout is 0.0+0.0
 
 autumn-sound-126, 153M
 Increased both dropout to 0.2
-test loss
+perplexity
 
 ### What's implemented in the transformer?
 
 `DATA_PATH=./data python -m train experiment=wt103/transformer_simple`
 
-hearty-deluge-123
-124M, 2.2384443283081055
+hearty-deluge-123, 124M
+perplexity, 21.063
 
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
 
-efficient-tree-125
-123M,
+efficient-tree-125, 123M
+perplexity, 21.128
+
+Current version (hearty-deluge-123 and efficient-tree-125) use dropout = 0.1
+
+Plan to use dropout = 0.2 to see the effects.
