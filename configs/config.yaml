@@ -35,7 +35,7 @@ train:
   ckpt: null # Resume training
 
   disable_dataset: False # Disable dataset loading
-  validate_at_start: false
+  validate_at_start: True
 
   pretrained_model_path: null # Path to pretrained model
   pretrained_model_strict_load: true # Whether to load the pretrained model even if the model is not compatible
@@ -56,7 +56,7 @@ tolerance: # fault tolerance for training on preemptible machines
 # Set `~wandb` or `wandb=null` or `wandb.mode=disabled` to disable logging
 # If other loggers are added, it would make sense to put this one level lower under train/ or logger/
 wandb:
-  project: long-conv
+  project: safari-Hazy
   group: ""
   job_type: training
   mode: online # choices=['online', 'offline', 'disabled']
