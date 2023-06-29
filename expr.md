@@ -124,7 +124,7 @@ radiant-thunder-104
 Mixing of attention layer and something I'm not sure about.
 
 `DATA_PATH=./data python -m train experiment=wt103/base`
-scarlet-aardvark-115
+scarlet-aardvark-115, 123M
 
 test loss goes to 1.125, no idea what's wrong with the code
 
@@ -135,11 +135,11 @@ test loss goes to 1.125, no idea what's wrong with the code
 <!-- misty-haze-111 (with attention-layer at 1 and 8, test loss 22.074) -->
 
 astral-shadow-116, 153M
-perplexity 25.829, overfitted, residual and embedding dropout is 0.0+0.0
+perplexity, 25.829, overfitted, residual and embedding dropout is 0.0+0.0
 
 autumn-sound-126, 153M
 Increased both dropout to 0.2
-perplexity
+perplexity, 29.6 (in progress)
 
 ### What's implemented in the transformer?
 
@@ -156,3 +156,8 @@ perplexity, 21.128
 Current version (hearty-deluge-123 and efficient-tree-125) use dropout = 0.1
 
 Plan to use dropout = 0.2 to see the effects.
+
+`DATA_PATH=./data python -m train experiment=wt103/transformer`
+
+fresh-morning-127, 123M
+perplexity, 137
