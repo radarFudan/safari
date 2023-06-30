@@ -121,12 +121,13 @@ radiant-thunder-104
 
 ### What's implemented in the base?
 
-Mixing of attention layer and something I'm not sure about.
+Mixing of attention layer with explicit configuration and base layer which is also attention (according to the block design)
 
 `DATA_PATH=./data python -m train experiment=wt103/base`
+
 scarlet-aardvark-115, 123M
 
-test loss goes to 1.125, no idea what's wrong with the code
+test loss goes to 1.125, no idea what's wrong with the code, potential problem with dataloader.
 
 ### What's implemented in the hyena?
 
@@ -134,16 +135,28 @@ test loss goes to 1.125, no idea what's wrong with the code
 
 <!-- misty-haze-111 (with attention-layer at 1 and 8, test loss 22.074) -->
 
-astral-shadow-116, 153M
-perplexity, 25.829, overfitted, residual and embedding dropout is 0.0+0.0
+<!-- a. astral-shadow-116, 153M
 
-autumn-sound-126, 153M
-Increased both dropout to 0.2
-perplexity, 29.6 (in progress)
+perplexity, 25.829, overfitted, residual and embedding dropout is 0.0+0.0 -->
+
+a. autumn-sound-126, 153M
+
+Increased both dropout to 0.2 + 0.2
+
+perplexity, 22, not idea, target 18.6
+
+b. volcanic-firebrand-129, 153M
+
+Consider 0.0+0.2+0.15 (from S5 https://github.com/lindermanlab/S5/blob/development/configs/hyena/wikitext_hyena.yaml)
+
+Next:
+try lr 0.001 + weight_decay 0.25
+order: 2
+filter_order: 128
 
 ### What's implemented in the transformer?
 
-`DATA_PATH=./data python -m train experiment=wt103/transformer_simple`
+<!-- `DATA_PATH=./data python -m train experiment=wt103/transformer_simple`
 
 hearty-deluge-123, 124M
 perplexity, 21.063
@@ -155,9 +168,21 @@ perplexity, 21.128
 
 Current version (hearty-deluge-123 and efficient-tree-125) use dropout = 0.1
 
-Plan to use dropout = 0.2 to see the effects.
+It's highly sensitive to hyperparameters...
+ -->
 
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
 
+0.2+0.2+0.2
+
 fresh-morning-127, 123M
-perplexity, 137
+
+test perplexity, 18.392
+
+different-music-128, 123M
+
+test perplexity,
+
+to be reproduced
+
+(Just cleaned up the configuration)
