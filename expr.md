@@ -145,7 +145,7 @@ Consider 0.0+0.2+0.15 (from S5 https://github.com/lindermanlab/S5/blob/developme
 
 perplexity, 22.973, not ideal, target 18.6 (in over-fitting)
 
-c.
+c. floral-star-132,
 
 Next:
 try lr 0.001 + weight_decay 0.25
