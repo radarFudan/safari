@@ -1,9 +1,9 @@
-# @package _global_
+# @package _global_ trying to be similar to S5's hyena
 defaults:
   - /experiment/wt103/base.yaml
   # - override /scheduler: cosine_warmup
 
-model_name: hyena-153
+model_name: hyena-125
 model:
   _name_: lm
   d_model: 768
