@@ -149,6 +149,8 @@ b. volcanic-firebrand-129, 153M
 
 Consider 0.0+0.2+0.15 (from S5 https://github.com/lindermanlab/S5/blob/development/configs/hyena/wikitext_hyena.yaml)
 
+perplexity, 23.00 (in progress)
+
 Next:
 try lr 0.001 + weight_decay 0.25
 order: 2
@@ -177,11 +179,11 @@ It's highly sensitive to hyperparameters...
 
 fresh-morning-127, 123M
 
-test perplexity, 18.392
+test perplexity, 18.2
 
 different-music-128, 123M
 
-test perplexity,
+test perplexity, 26.2 (in progress)
 
 to be reproduced
 
