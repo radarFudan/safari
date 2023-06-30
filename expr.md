@@ -183,7 +183,7 @@ test perplexity, 18.2
 
 different-music-128, 123M
 
-test perplexity, 26.2 (in progress)
+test perplexity, 24 (in progress)
 
 to be reproduced
 
