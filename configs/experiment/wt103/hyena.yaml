@@ -24,7 +24,7 @@ model:
     dropout: 0.15
 
     # emb_dim: 33
-    # l_max: ${dataset.max_length}
+    l_max: ${dataset.max_length}
     # fused_fft_conv: True
     # modulate: True # What's the usage of modulate
 
