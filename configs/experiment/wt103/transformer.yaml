@@ -33,3 +33,9 @@ model:
 trainer:
   accelerator: gpu
   devices: 1
+
+dataset:
+  # batch_size: 32  # Per GPU
+  # batch_size: ${eval:"8 if ${train.gpu_mem} <= 16 else (16 if ${train.gpu_mem} <= 24 else 32)"}
+  batch_size: 8 # 8 use 15G, 16 use 30G, 24 use 45G, 20 should be 37.5, reasonable
+  max_length: 1024

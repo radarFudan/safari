@@ -133,23 +133,19 @@ test loss goes to 1.125, no idea what's wrong with the code, potential problem w
 
 `DATA_PATH=./data python -m train experiment=wt103/hyena`
 
-<!-- misty-haze-111 (with attention-layer at 1 and 8, test loss 22.074) -->
-
-<!-- a. astral-shadow-116, 153M
-
-perplexity, 25.829, overfitted, residual and embedding dropout is 0.0+0.0 -->
-
 a. autumn-sound-126, 153M
 
-Increased both dropout to 0.2 + 0.2
+Increased both dropout to 0.2 + 0.2, no hyena layer dropout
 
-perplexity, 22, not idea, target 18.6
+perplexity, 22, not ideal, target 18.6
 
 b. volcanic-firebrand-129, 153M
 
 Consider 0.0+0.2+0.15 (from S5 https://github.com/lindermanlab/S5/blob/development/configs/hyena/wikitext_hyena.yaml)
 
-perplexity, 23.00 (in progress)
+perplexity, 22.973, not ideal, target 18.6 (in over-fitting)
+
+c.
 
 Next:
 try lr 0.001 + weight_decay 0.25
@@ -158,33 +154,18 @@ filter_order: 128
 
 ### What's implemented in the transformer?
 
-<!-- `DATA_PATH=./data python -m train experiment=wt103/transformer_simple`
-
-hearty-deluge-123, 124M
-perplexity, 21.063
-
-`DATA_PATH=./data python -m train experiment=wt103/transformer`
-
-efficient-tree-125, 123M
-perplexity, 21.128
-
-Current version (hearty-deluge-123 and efficient-tree-125) use dropout = 0.1
-
-It's highly sensitive to hyperparameters...
- -->
-
 `DATA_PATH=./data python -m train experiment=wt103/transformer`
 
 0.2+0.2+0.2
 
-fresh-morning-127, 123M
+a. fresh-morning-127, 123M
 
 test perplexity, 18.2
 
-different-music-128, 123M
+b. different-music-128, 123M
 
-test perplexity, 24 (in progress)
+test perplexity, 19.2 (in progress)
 
-to be reproduced
+c. eager-puddle-130, 123M, (Just cleaned up the configuration, use half GPU to save some space)
 
-(Just cleaned up the configuration)
+test perplexity,
