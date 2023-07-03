@@ -147,6 +147,10 @@ perplexity, 22.973, not ideal, target 18.6 (in over-fitting)
 
 c. floral-star-132, 125M
 
+eternal-serenity-133, 25.857
+
+d.
+
 Next:
 try lr 0.001 + weight_decay 0.25
 order: 2
@@ -164,8 +168,8 @@ test perplexity, 18.2
 
 b. different-music-128, 123M
 
-test perplexity, 19.2 (in progress)
+test perplexity, 17.877 (300 epochs)
 
 c. eager-puddle-130, 123M, (Just cleaned up the configuration, use half GPU to save some space)
 
-test perplexity,
+test perplexity, 19.434 (30epochs, in progress)
