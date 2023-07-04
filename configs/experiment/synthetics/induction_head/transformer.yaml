@@ -17,5 +17,3 @@ model:
   max_position_embeddings: ${dataset.__l_max} # positional embeddings
 
 encoder: position_id # get position ID
-
-# Why is this model transformer, the default layer is long-conv.

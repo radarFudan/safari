@@ -1,9 +1,17 @@
-# @package _global_
+# @package _global_ trying to be similar to S5's hyena
 defaults:
   - /experiment/wt103/hyena.yaml
 
 model_name: hyena-125
 model:
+  _name_: lm
   d_model: 768
   d_inner: 3072
   n_layer: 12
+
+optimizer:
+  lr: 0.001
+  weight_decay: 0.1
+
+trainer:
+  devices: 4

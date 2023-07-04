@@ -149,7 +149,9 @@ c. floral-star-132, 125M
 
 eternal-serenity-133, 25.857
 
-d.
+d. amber-silence-134, 153M
+
+e.
 
 Next:
 try lr 0.001 + weight_decay 0.25
@@ -172,4 +174,4 @@ test perplexity, 17.877 (300 epochs)
 
 c. eager-puddle-130, 123M, (Just cleaned up the configuration, use half GPU to save some space)
 
-test perplexity, 19.434 (30epochs, in progress)
+test perplexity, 18.334 (100 epochs, in progress)
