@@ -145,13 +145,25 @@ Consider 0.0+0.2+0.15 (from S5 https://github.com/lindermanlab/S5/blob/developme
 
 perplexity, 22.973, not ideal, target 18.6 (in over-fitting)
 
-c. floral-star-132, 125M
+c. eternal-serenity-133, 125M
 
-eternal-serenity-133, 25.857
+25.857
 
 d. amber-silence-134, 153M
 
-e.
+22.561
+
+e. devout-cloud-135, 153M
+
+Increase the dropout to 0.5
+
+f.
+
+Increase the dropout to 0.9
+
+f.
+
+Increase the dropout to 0.99
 
 Next:
 try lr 0.001 + weight_decay 0.25
@@ -174,4 +186,4 @@ test perplexity, 17.877 (300 epochs)
 
 c. eager-puddle-130, 123M, (Just cleaned up the configuration, use half GPU to save some space)
 
-test perplexity, 18.334 (100 epochs, in progress)
+test perplexity, 17.953 (214 epochs, in progress)

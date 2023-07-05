@@ -9,8 +9,8 @@ model:
   d_inner: 1728
   n_layer: 18
   vocab_size: 50257
-  resid_dropout: 0.0
-  embed_dropout: 0.2 # 0.1 from the pile, 0.2 from Github discussion
+  resid_dropout: 0.5
+  embed_dropout: 0.5 # 0.1 from the pile, 0.2 from Github discussion
   attn_layer_idx: [] # Avoid use attention layers
   layer:
     _name_: hyena
@@ -20,7 +20,7 @@ model:
     inner_factor: 1
     num_blocks: 1
     outer_mixing: False
-    dropout: 0.15 # From S5
+    dropout: 0.5 # From S5
 
     emb_dim: 33
     l_max: ${dataset.max_length}
