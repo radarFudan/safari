@@ -157,6 +157,8 @@ e. devout-cloud-135, 153M
 
 Increase the dropout to 0.5
 
+19.948 (149 epochs)
+
 f.
 
 Increase the dropout to 0.9
