@@ -159,6 +159,8 @@ Increase the dropout to 0.5
 
 19.948 (149 epochs)
 
+19.545 (309 epochs)
+
 f.
 
 Increase the dropout to 0.9
