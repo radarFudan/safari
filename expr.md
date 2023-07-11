@@ -162,13 +162,13 @@ Increase the dropout to 0.5
 
 19.545 (309 epochs)
 
-f.
+f. Very slow
 
 Increase the dropout to 0.9
 
-f.
+g. deep-wood-136
 
-Increase the dropout to 0.99
+Increase the dropout to 0.7
 
 Next:
 try lr 0.001 + weight_decay 0.25
