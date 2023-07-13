@@ -1,7 +1,7 @@
 # @package _global_
 defaults:
   - /experiment/wt103/base.yaml
-  - - override /scheduler: cosine_warmup
+  - override /scheduler: cosine_warmup
 
 model_name: hyena-153
 model:
