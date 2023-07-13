@@ -45,12 +45,12 @@ dataset:
   batch_size: 16 # 8 use 15G, 16 use 30G, 24 use 45G, 20 should be 37.5, reasonable
   max_length: 1024
 
-scheduler:
-  t_in_epochs: False
-  t_initial: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs}}
-  warmup_lr_init: 1e-6
-  warmup_t: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs} * 0.01}
-  lr_min: ${eval:0.1 * ${optimizer.lr}}
+# scheduler:
+#   t_in_epochs: False
+#   t_initial: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs}}
+#   warmup_lr_init: 1e-6
+#   warmup_t: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs} * 0.01}
+#   lr_min: ${eval:0.1 * ${optimizer.lr}}
 
 optimizer:
   lr: 6e-4

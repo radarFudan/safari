@@ -4,5 +4,4 @@ train:
 scheduler:
   # _target_: transformers.get_constant_schedule_with_warmup
   _name_: constant_warmup
-  num_training_steps: 115000
   num_warmup_steps: 1000 # Number of iterations for LR warmup
