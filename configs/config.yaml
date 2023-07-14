@@ -10,6 +10,7 @@ defaults:
   # # - task: multiclass_classification # Defines loss and metrics
   # # - encoder: null # Interface between data and model
   # # - decoder: null # Interface between model and targets
+  - logger: tensorboard
 
 # Additional arguments used to configure the training loop
 # Most of these set combinations of options in the PL trainer, add callbacks, or add features to the optimizer

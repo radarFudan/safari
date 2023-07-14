@@ -3,7 +3,7 @@ defaults:
   - /experiment/wt103/base.yaml
   - override /scheduler: cosine_warmup
 
-model_name: hyena-153
+model_name: hyena-125
 model:
   _name_: lm
   d_model: 768
@@ -41,7 +41,7 @@ model:
   pad_vocab_size_multiple: 1
 
 optimizer:
-  lr: 0.001
+  lr: 0.005
   weight_decay: 0.25
 
 trainer:
