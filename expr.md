@@ -166,14 +166,7 @@ f. Very slow
 
 Increase the dropout to 0.9
 
-g. deep-wood-136
-
-Increase the dropout to 0.7
-
-Next:
-try lr 0.001 + weight_decay 0.25
-order: 2
-filter_order: 128
+g.
 
 ### What's implemented in the transformer?
 
